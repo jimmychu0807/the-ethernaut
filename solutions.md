@@ -1,14 +1,14 @@
 # Ethernaut
 
-https://ethernaut.openzeppelin.com/
-- player: 0xB0fD5a878DBF3F9358A251caF9b6Fc692A999cA7
+- https://ethernaut.openzeppelin.com/
+- player: [0xB0fD5a878DBF3F9358A251caF9b6Fc692A999cA7](https://sepolia.etherscan.io/address/0xB0fD5a878DBF3F9358A251caF9b6Fc692A999cA7)
 - Sepolia Network
 - `_ethers.version` == **5.7.2**
 
 
 ## Problem 2: Fallback
 
-contract addr: 0x119fBFcF1b46DcCB3EEae3f40A06bf29f79e3d57
+contract addr: [0x119fBFcF1b46DcCB3EEae3f40A06bf29f79e3d57](https://sepolia.etherscan.io/address/0x119fBFcF1b46DcCB3EEae3f40A06bf29f79e3d57)
 
 Solutions
 
@@ -33,7 +33,7 @@ Note: beware the max gas limit restricted on Sepolia that metamask won't automat
 
 ## Problem 3: Fallout
 
-contract addr: 0x25d51fC62EfE411ffe273434D1aE20a1a513022d
+contract addr: [0x25d51fC62EfE411ffe273434D1aE20a1a513022d](https://sepolia.etherscan.io/address/0x25d51fC62EfE411ffe273434D1aE20a1a513022d)
 
 Solutions
 
@@ -47,16 +47,16 @@ Solutions
 
 ## Problem 4: Coin Flip
 
-CoinFlip contract addr:      0xFb9BcE79EbE63c7551A9EB856b03Eb9E56742dCb
-SolveCoinFlip contract addr: 0x8A7BC0BBD97bcDeAf5456E42259e191Fc761A176
+CoinFlip contract addr: [0xFb9BcE79EbE63c7551A9EB856b03Eb9E56742dCb](https://sepolia.etherscan.io/address/0xFb9BcE79EbE63c7551A9EB856b03Eb9E56742dCb)
 
-rpc: https://eth-sepolia.g.alchemy.com/v2/LdvCtWqpQiKUHrpARkgjUU6Dafn1r9Gs
+SolveCoinFlip contract addr: [0x8A7BC0BBD97bcDeAf5456E42259e191Fc761A176](https://eth-sepolia.blockscout.com/address/0x8A7BC0BBD97bcDeAf5456E42259e191Fc761A176)
 
 You can't use typescript js to do this. You need to deploy a contract to attack this contract
 
-remix (local) CoinFlip: 0x358AA13c52544ECCEF6B0ADD0f801012ADAD5eE3
-remix (local) SolveCoinFlip: 0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99
+- remix (local) CoinFlip: 0x358AA13c52544ECCEF6B0ADD0f801012ADAD5eE3
+- remix (local) SolveCoinFlip: 0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99
 
 ## Problem 5: Telephone
 
-contract addr: 0x92385004C0Af2AE55764d9DD34e747971B4CEb2D
+- contract addr: [0x92385004C0Af2AE55764d9DD34e747971B4CEb2D](https://sepolia.etherscan.io/address/0x92385004C0Af2AE55764d9DD34e747971B4CEb2D)
+- SolveTelephone contract addr: [0x399981F8FB9398378a5f9D2E4713dfed803e2a10](https://sepolia.etherscan.io/address/0x399981F8FB9398378a5f9D2E4713dfed803e2a10)

@@ -1,4 +1,4 @@
-# The Ethernaut solutions
+# The Ethernaut Solutions
 
-- [solutions](./solutions.md)
-- also explore sub-directories for specific problems
+- [`solutions.md`](./solutions.md)
+- Also explore sub-directories for specific problems
