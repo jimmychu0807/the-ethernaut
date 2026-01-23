@@ -1,0 +1,58 @@
+# Ethernaut
+
+https://ethernaut.openzeppelin.com/
+- player: 0xB0fD5a878DBF3F9358A251caF9b6Fc692A999cA7
+- Sepolia Network
+- `_ethers.version` == **5.7.2**
+
+
+## Problem 2: Fallback
+
+contract addr: 0x119fBFcF1b46DcCB3EEae3f40A06bf29f79e3d57
+
+Solutions
+
+1. Run:
+   ```ts
+   await contract.contribute({value: _ethers.utils.parseEther("0.0001") })
+   ```
+   - you are not allowed to contribute 0.001 ether or more to the contract
+
+2. Send 0.0001 tokens to your practice contract from wallet
+
+   - you have became the owner by this point.
+
+3. Run:
+   ```ts
+   await contract.withdraw()
+   ```
+
+4. Submit the contract
+
+Note: beware the max gas limit restricted on Sepolia that metamask won't automatically detect.
+
+## Problem 3: Fallout
+
+contract addr: 0x25d51fC62EfE411ffe273434D1aE20a1a513022d
+
+Solutions
+
+1. Run:
+
+   ```ts
+   await contract.Fal1out()
+   ```
+
+   Everyone can call this function and claim the ownership of the contract
+
+## Problem 4: Coin Flip
+
+CoinFlip contract addr:      0xFb9BcE79EbE63c7551A9EB856b03Eb9E56742dCb
+SolveCoinFlip contract addr: 0x8A7BC0BBD97bcDeAf5456E42259e191Fc761A176
+
+rpc: https://eth-sepolia.g.alchemy.com/v2/LdvCtWqpQiKUHrpARkgjUU6Dafn1r9Gs
+
+You can't use typescript js to do this. You need to deploy a contract to attack this contract
+
+remix (local) CoinFlip: 0x358AA13c52544ECCEF6B0ADD0f801012ADAD5eE3
+remix (local) SolveCoinFlip: 0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99
