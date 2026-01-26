@@ -70,7 +70,7 @@ Solution
 
 ## Problem 6: Delegation
 
-- contract address: 0x344fCaCD370F420d79D5f9f6B74d86Cc1bB05383
+- contract address: [0x344fCaCD370F420d79D5f9f6B74d86Cc1bB05383](https://eth-sepolia.blockscout.com/address/0x344fCaCD370F420d79D5f9f6B74d86Cc1bB05383)
 
 Solution
 
@@ -87,3 +87,40 @@ Solution
 
 - note on parity hack:
    https://www.openzeppelin.com/news/on-the-parity-wallet-multisig-hack-405a8c12e8f7
+
+## Problem 7: Force
+
+- Force contract: [0x7Bf28C183F18aFD22857951B21149D8833A1A7c3](https://eth-sepolia.blockscout.com/address/0x7Bf28C183F18aFD22857951B21149D8833A1A7c3)
+- ForceTransfer contract: [0x6BA6Af3195dea194aF63C408691ae336A54AdB51](https://eth-sepolia.blockscout.com/address/0x6BA6Af3195dea194aF63C408691ae336A54AdB51)
+
+- Without a `receive() payable` and `fallback() payable`, a contract doesn't take a native token transfer. It will be reverted.
+- But you can **selfdestruct** another contract, and that contract will send all remaining ETH to the beneficiary contract.
+
+   ```sol
+   // SPDX-License-Identifier: MIT
+   pragma solidity ^0.8.0;
+
+   contract ForceSender {
+       constructor() payable {}          // fund this contract on deployment
+       receive() external payable {}     // or fund later
+
+       function forceSend(address payable target) external {
+           selfdestruct(target);         // sends all ETH to target, no fallback/receive called
+       }
+   }
+   ```
+
+- To use metamask as the provider connecting to the blockchain in ethers.js
+
+   ```ts
+   // 1) Wrap window.ethereum
+   const provider = new _ethers.providers.Web3Provider(window.ethereum);
+   ```
+
+## Problem 8: Vault
+
+- Vault addr: [0x50D9a4Aa381dca1B7a0E36523D0A49D668dED769](https://sepolia.etherscan.io/address/0x50D9a4Aa381dca1B7a0E36523D0A49D668dED769)
+- How can you view private storage in deployed smart contract?
+  **YES you can**, by directly reading the storage slot, using `provider.getStorageAt()`
+
+## Problem 9: King
