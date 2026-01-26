@@ -96,26 +96,26 @@ Solution
 - Without a `receive() payable` and `fallback() payable`, a contract doesn't take a native token transfer. It will be reverted.
 - But you can **selfdestruct** another contract, and that contract will send all remaining ETH to the beneficiary contract.
 
-```sol
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+   ```sol
+   // SPDX-License-Identifier: MIT
+   pragma solidity ^0.8.0;
 
-contract ForceSender {
-    constructor() payable {}          // fund this contract on deployment
-    receive() external payable {}     // or fund later
+   contract ForceSender {
+       constructor() payable {}          // fund this contract on deployment
+       receive() external payable {}     // or fund later
 
-    function forceSend(address payable target) external {
-        selfdestruct(target);         // sends all ETH to target, no fallback/receive called
-    }
-}
-```
+       function forceSend(address payable target) external {
+           selfdestruct(target);         // sends all ETH to target, no fallback/receive called
+       }
+   }
+   ```
 
-To use metamask as the provider connecting to the blockchain in ethers.js
+- To use metamask as the provider connecting to the blockchain in ethers.js
 
-```ts
-// 1) Wrap window.ethereum
-const provider = new _ethers.providers.Web3Provider(window.ethereum);
-```
+   ```ts
+   // 1) Wrap window.ethereum
+   const provider = new _ethers.providers.Web3Provider(window.ethereum);
+   ```
 
 ## Problem 8: Vault
 
