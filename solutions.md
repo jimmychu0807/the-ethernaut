@@ -70,7 +70,7 @@ Solution
 
 ## Problem 6: Delegation
 
-- contract address: 0x344fCaCD370F420d79D5f9f6B74d86Cc1bB05383
+- contract address: [0x344fCaCD370F420d79D5f9f6B74d86Cc1bB05383](https://eth-sepolia.blockscout.com/address/0x344fCaCD370F420d79D5f9f6B74d86Cc1bB05383)
 
 Solution
 
@@ -90,8 +90,8 @@ Solution
 
 ## Problem 7: Force
 
-- Force contract: 0x7Bf28C183F18aFD22857951B21149D8833A1A7c3
-- ForceTransfer contract: 0x6BA6Af3195dea194aF63C408691ae336A54AdB51
+- Force contract: [0x7Bf28C183F18aFD22857951B21149D8833A1A7c3](https://eth-sepolia.blockscout.com/address/0x7Bf28C183F18aFD22857951B21149D8833A1A7c3)
+- ForceTransfer contract: [0x6BA6Af3195dea194aF63C408691ae336A54AdB51](https://eth-sepolia.blockscout.com/address/0x6BA6Af3195dea194aF63C408691ae336A54AdB51)
 
 - Without a `receive() payable` and `fallback() payable`, a contract doesn't take a native token transfer. It will be reverted.
 - But you can **selfdestruct** another contract, and that contract will send all remaining ETH to the beneficiary contract.
@@ -116,3 +116,11 @@ To use metamask as the provider connecting to the blockchain in ethers.js
 // 1) Wrap window.ethereum
 const provider = new _ethers.providers.Web3Provider(window.ethereum);
 ```
+
+## Problem 8: Vault
+
+- Vault addr: [0x50D9a4Aa381dca1B7a0E36523D0A49D668dED769](https://sepolia.etherscan.io/address/0x50D9a4Aa381dca1B7a0E36523D0A49D668dED769)
+- How can you view private storage in deployed smart contract?
+  **YES you can**, by directly reading the storage slot, using `provider.getStorageAt()`
+
+## Problem 9: King
