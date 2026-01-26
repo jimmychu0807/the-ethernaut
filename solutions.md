@@ -84,3 +84,6 @@ Solution
   // display: `0xdd365b8b`
   ```
 - send a transaction from metamask wallet to the contract address with the above data.
+
+- note on parity hack:
+   https://www.openzeppelin.com/news/on-the-parity-wallet-multisig-hack-405a8c12e8f7
