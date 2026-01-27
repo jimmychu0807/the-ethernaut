@@ -131,3 +131,8 @@ Solution
 Solution
 
 - you want to deploy a contract, transfer value, so the smart contract become the king. The smart contract has to revert() inside the `receive()` function so `transfer()` from the caller would fail.
+
+## Problem 10: Re-entrancy
+
+- Reentrance contract: [0x282A05d379B06492bE2ae7717f46949baE4a89b4](https://eth-sepolia.blockscout.com/address/0x282A05d379B06492bE2ae7717f46949baE4a89b4)
+- SolveReentrance contract: [0x5e906767e9a29560c11E8797AF5727c1AC9c5472](https://eth-sepolia.blockscout.com/address/0x5e906767e9a29560c11E8797AF5727c1AC9c5472)
