@@ -142,3 +142,13 @@ Solution
 - Elevator contract: [0xab4F955b7850317927183490267D732B4f43d053](https://eth-sepolia.blockscout.com/address/0xab4F955b7850317927183490267D732B4f43d053)
 
 - SolveElevator contract: [0xcc57eDeF112544A043a6d868aeccCFd189026150](https://eth-sepolia.blockscout.com/address/0xcc57eDeF112544A043a6d868aeccCFd189026150)
+
+## Problem 12: Privacy
+
+- Privacy contract: [0x6eAF72dfE1F9128693905415F053B2bBEC4cB8BE](https://eth-sepolia.blockscout.com/address/0x6eAF72dfE1F9128693905415F053B2bBEC4cB8BE)
+
+Solution
+
+- To read `data[2]` it is at storage slot 5
+- storage slot 5 is: `0x675f4672e6c547e6ff949be945aac6022678602fb605a537270c9d15ec6e62f8`
+- We want bytes16, the first 16 bytes. So we call unlock() with parameter: `0x675f4672e6c547e6ff949be945aac602`.
