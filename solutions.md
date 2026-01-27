@@ -124,3 +124,15 @@ Solution
   **YES you can**, by directly reading the storage slot, using `provider.getStorageAt()`
 
 ## Problem 9: King
+
+- King contract: [0x2EF61D5357a8c6d05D9346FE46A49540924aaeD3](https://eth-sepolia.blockscout.com/address/0x2EF61D5357a8c6d05D9346FE46A49540924aaeD3)
+- SolveKing contract: [0x37Ec18964BcB3B8702cCCC039268E2F9c9578959](https://eth-sepolia.blockscout.com/address/0x37Ec18964BcB3B8702cCCC039268E2F9c9578959)
+
+Solution
+
+- you want to deploy a contract, transfer value, so the smart contract become the king. The smart contract has to revert() inside the `receive()` function so `transfer()` from the caller would fail.
+
+## Problem 10: Re-entrancy
+
+- Reentrance contract: [0x282A05d379B06492bE2ae7717f46949baE4a89b4](https://eth-sepolia.blockscout.com/address/0x282A05d379B06492bE2ae7717f46949baE4a89b4)
+- SolveReentrance contract: [0x5e906767e9a29560c11E8797AF5727c1AC9c5472](https://eth-sepolia.blockscout.com/address/0x5e906767e9a29560c11E8797AF5727c1AC9c5472)
