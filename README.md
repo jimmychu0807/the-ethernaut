@@ -1,4 +1,5 @@
 # The Ethernaut Solutions
 
-- [`solutions.md`](./solutions.md)
+- Problem set: https://ethernaut.openzeppelin.com/
+- [Solutions](./solutions.md)
 - Also explore sub-directories for specific problems
