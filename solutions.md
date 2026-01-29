@@ -170,3 +170,20 @@ Solution
 - GatekeeperTwo contract: [0x805Dfa3BBb4A45b4475643969F5A20a366C130CA](https://eth-sepolia.blockscout.com/address/0x805Dfa3BBb4A45b4475643969F5A20a366C130CA)
 
 - SolveGatekeeperTwo contract: [0xb3E792498C9e05fE4ADdfFd8239064E99c378949](https://eth-sepolia.blockscout.com/address/0xb3E792498C9e05fE4ADdfFd8239064E99c378949)
+
+## Problem 15: Naught Coin
+
+- NaughtCoin contract: [0x0fCca0985F3f8dB96D0A715d261C9222028c2F25](https://eth-sepolia.blockscout.com/address/0x0fCca0985F3f8dB96D0A715d261C9222028c2F25)
+
+Solution:
+
+- Even though `transfer()` is gated with **lockTokens** check, `transferFrom()` is not.
+
+- So in Chrome dev console, execute the following:
+
+   ```ts
+   let tx = await contract.approve(player, '1000000000000000000000000')
+   let tx2 = await contract.transferFrom(player, "0xb3E792498C9e05fE4ADdfFd8239064E99c378949", '1000000000000000000000000')
+   ```
+
+## Problem 16: Preservation
