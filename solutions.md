@@ -209,3 +209,15 @@ Solution:
 - Refer to txHash: [0xbf0291794ccfd65b519f2081c1ef0ee969e2d699d2d9bf41a57dcb871fba3dbd](https://sepolia.etherscan.io/tx/0xbf0291794ccfd65b519f2081c1ef0ee969e2d699d2d9bf41a57dcb871fba3dbd)
 
 In etherscan, when viewing a txHash, looking over **State**, you can see which storage slot a tx has updated.
+
+## Problem 17: Recovery
+
+- Recovery contract: [0x499BBe67c781e73762EcecC7Cbb082043639a053](https://eth-sepolia.blockscout.com/address/0x499BBe67c781e73762EcecC7Cbb082043639a053)
+
+Solution:
+
+- Reviewing the contract [internal txns](https://eth-sepolia.blockscout.com/address/0x499BBe67c781e73762EcecC7Cbb082043639a053?tab=internal_txns), it has created the SimpleToken contract at [0xfee6656D854B4a27777F98e68bbBA12C66F70B14](https://eth-sepolia.blockscout.com/address/0xfee6656D854B4a27777F98e68bbBA12C66F70B14).
+
+- Copy the **SimpleToken** code in etherscan
+- Load up the contract at the above address: **0xfee6656D854B4a27777F98e68bbBA12C66F70B14**.
+- Call **destroy()**
