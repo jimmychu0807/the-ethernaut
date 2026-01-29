@@ -10,7 +10,7 @@
 
 contract addr: [0x119fBFcF1b46DcCB3EEae3f40A06bf29f79e3d57](https://sepolia.etherscan.io/address/0x119fBFcF1b46DcCB3EEae3f40A06bf29f79e3d57)
 
-Solutions
+**Solution**
 
 1. Run:
    ```ts
@@ -35,7 +35,7 @@ Note: beware the max gas limit restricted on Sepolia that metamask won't automat
 
 contract addr: [0x25d51fC62EfE411ffe273434D1aE20a1a513022d](https://sepolia.etherscan.io/address/0x25d51fC62EfE411ffe273434D1aE20a1a513022d)
 
-Solutions
+**Solution**
 
 1. Run:
 
@@ -63,7 +63,7 @@ Solutions
 - player: 0xB0fD5a878DBF3F9358A251caF9b6Fc692A999cA7
 - another one: 0x9440Abf16a3319E633DA6835d90470ed029D7c0B
 
-Solution
+**Solution**
 
 - There is an underflow behavior in the smart contract.
 - Just transfer any value larger than 20, it will still pass through the `require(balances[msg.sender] - _value >= 0)` test.
@@ -72,7 +72,7 @@ Solution
 
 - contract address: [0x344fCaCD370F420d79D5f9f6B74d86Cc1bB05383](https://eth-sepolia.blockscout.com/address/0x344fCaCD370F420d79D5f9f6B74d86Cc1bB05383)
 
-Solution
+**Solution**
 
 - construct the calldata by:
 
@@ -128,7 +128,7 @@ Solution
 - King contract: [0x2EF61D5357a8c6d05D9346FE46A49540924aaeD3](https://eth-sepolia.blockscout.com/address/0x2EF61D5357a8c6d05D9346FE46A49540924aaeD3)
 - SolveKing contract: [0x37Ec18964BcB3B8702cCCC039268E2F9c9578959](https://eth-sepolia.blockscout.com/address/0x37Ec18964BcB3B8702cCCC039268E2F9c9578959)
 
-Solution
+**Solution**
 
 - you want to deploy a contract, transfer value, so the smart contract become the king. The smart contract has to revert() inside the `receive()` function so `transfer()` from the caller would fail.
 
@@ -147,7 +147,7 @@ Solution
 
 - Privacy contract: [0x6eAF72dfE1F9128693905415F053B2bBEC4cB8BE](https://eth-sepolia.blockscout.com/address/0x6eAF72dfE1F9128693905415F053B2bBEC4cB8BE)
 
-Solution
+**Solution**
 
 - To read `data[2]` it is at storage slot 5
 - storage slot 5 is: `0x675f4672e6c547e6ff949be945aac6022678602fb605a537270c9d15ec6e62f8`
@@ -159,7 +159,7 @@ Solution
 
 - SolveGatekeeperOne contract: [0x641b1c10D8cd899aAD701426D97Ed96eA893Eac6](https://eth-sepolia.blockscout.com/address/0x641b1c10D8cd899aAD701426D97Ed96eA893Eac6)
 
-Solution
+**Solution**
 
 - tx.origin: **0xB0fD5a878DBF3F9358A251caF9b6Fc692A999cA7**
 - input: **0x00009cA700009cA7**
@@ -175,7 +175,7 @@ Solution
 
 - NaughtCoin contract: [0x0fCca0985F3f8dB96D0A715d261C9222028c2F25](https://eth-sepolia.blockscout.com/address/0x0fCca0985F3f8dB96D0A715d261C9222028c2F25)
 
-Solution:
+**Solution**
 
 - Even though `transfer()` is gated with **lockTokens** check, `transferFrom()` is not.
 
@@ -192,7 +192,7 @@ Solution:
 
 - SolvePreservation contract: [0x261AA8EAC6642b3f7B50Da50f42a39b7324931e2](https://eth-sepolia.blockscout.com/address/0x261AA8EAC6642b3f7B50Da50f42a39b7324931e2)
 
-Solution:
+**Solution**
 
 - Run in dev console
 
@@ -214,7 +214,7 @@ In etherscan, when viewing a txHash, looking over **State**, you can see which s
 
 - Recovery contract: [0x499BBe67c781e73762EcecC7Cbb082043639a053](https://eth-sepolia.blockscout.com/address/0x499BBe67c781e73762EcecC7Cbb082043639a053)
 
-Solution:
+**Solution**
 
 - Reviewing the contract [internal txns](https://eth-sepolia.blockscout.com/address/0x499BBe67c781e73762EcecC7Cbb082043639a053?tab=internal_txns), it has created the SimpleToken contract at [0xfee6656D854B4a27777F98e68bbBA12C66F70B14](https://eth-sepolia.blockscout.com/address/0xfee6656D854B4a27777F98e68bbBA12C66F70B14).
 
