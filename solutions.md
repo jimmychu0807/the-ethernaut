@@ -221,3 +221,48 @@ In etherscan, when viewing a txHash, looking over **State**, you can see which s
 - Copy the **SimpleToken** code in etherscan
 - Load up the contract at the above address: **0xfee6656D854B4a27777F98e68bbBA12C66F70B14**.
 - Call **destroy()**
+
+## Problem 18: Magic Number
+
+- MagicNum contract: [0x0465E8AaF6E1fbcC756E7dbAD8eD8E1509409068](https://eth-sepolia.blockscout.com/address/0x0465E8AaF6E1fbcC756E7dbAD8eD8E1509409068)
+
+Ref:
+- AI ans: https://www.perplexity.ai/search/the-ethernaut-G1EIbK15TA.3qnWN4q53sA#29
+- How to deploy raw bytecode to the EVM: https://ardislu.dev/raw-bytecode-evm
+
+**Solution**
+
+- Learn about what the byte code means
+
+- Runtime code:
+  ```
+  60 2A  - push 42
+  60 00  - push 0
+  52     - MSTORE
+  60 20  - push 32
+  60 00  - push 0
+  F3     - RETURN
+  ```
+
+  So the full deployed bytecode: 602A60005260206000F3
+
+- Creation code:
+  ```
+  600a600c600039600a6000f3
+  ```
+
+- Full bytecode with creation code:
+  ```
+  600a600c600039600a6000f3602A60005260206000F3
+  ```
+
+- Deploy the bytes code on Sepolia
+
+  ```ts
+  let provider = _ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  let tx = await signer.sendTransaction({ data: "0x600a600c600039600a6000f3602A60005260206000F3" });
+
+  // Find the deployed contract address from the returned txHash
+  await contract.setSolver("0xfcFa5d641285952B4f71564c5BC4952b370B7594");
+  ```
