@@ -304,4 +304,4 @@ Ref:
 
 The attack is called gas grieving - depleting all the transaction gas.
 
-If you are using a low level call to continue executing in the event an external call reverts, ensure that you specify a fixed gas stipend. For example <Address>.call{gas: <gasAmount>}(data). Typically one should follow the checks-effects-interactions pattern to avoid reentrancy attacks, there can be other circumstances (such as multiple external calls at the end of a function) where issues such as this can arise.
+If you are using a low level `call` to continue executing in the event an external call reverts, ensure that you specify a fixed gas stipend. For example `<Address>.call{gas: <gasAmount>}(data)`. Typically one should follow the [checks-effects-interactions](https://docs.soliditylang.org/en/v0.8.33/security-considerations.html#reentrancy) pattern to avoid reentrancy attacks, there can be other circumstances (such as multiple external calls at the end of a function) where issues such as this can arise.
