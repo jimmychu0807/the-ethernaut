@@ -293,3 +293,15 @@ Ref:
    ```ts
    await contract.revise('35707666377435648211887908874984608119992236509074197713628505308453184860938', "0x000000000000000000000000B0fD5a878DBF3F9358A251caF9b6Fc692A999cA7");
    ```
+
+## Problem 20: Denial
+
+- Denial contract: [0x47b6719d71f7B6Bf6D9234Ca8f3C31bFa328357A](https://eth-sepolia.blockscout.com/address/0x47b6719d71f7B6Bf6D9234Ca8f3C31bFa328357A)
+
+- SolveDenial contract: [0x73E201be2A7e6695Ee81958E8172bd559c52Dc98](https://eth-sepolia.blockscout.com/address/0x73E201be2A7e6695Ee81958E8172bd559c52Dc98)
+
+### Learning
+
+The attack is called gas grieving - depleting all the transaction gas.
+
+If you are using a low level call to continue executing in the event an external call reverts, ensure that you specify a fixed gas stipend. For example <Address>.call{gas: <gasAmount>}(data). Typically one should follow the checks-effects-interactions pattern to avoid reentrancy attacks, there can be other circumstances (such as multiple external calls at the end of a function) where issues such as this can arise.
