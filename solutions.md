@@ -300,7 +300,7 @@ Ref:
 
 - SolveDenial contract: [0x73E201be2A7e6695Ee81958E8172bd559c52Dc98](https://eth-sepolia.blockscout.com/address/0x73E201be2A7e6695Ee81958E8172bd559c52Dc98)
 
-### Learning
+**Learning**
 
 The attack is called gas grieving - depleting all the transaction gas.
 
@@ -312,6 +312,14 @@ If you are using a low level `call` to continue executing in the event an extern
 
 - SolveShop contract: [0x628Bda7Ea5632E928CE364b91FE60927D697646f](https://sepolia.etherscan.io/address/0x628Bda7Ea5632E928CE364b91FE60927D697646f)
 
-### Learning
+**Learning**
 
 The learning is that even though the called contract is restricted to be a view function. It can still read other contracts and rely on external contract states, and make it behave like a function that depend on varying states.
+
+## Problem 22: Dex
+
+- Dex contract: [0x2fc8d823E95Ad23514373175Bfbf16a9d20Acc72](https://eth-sepolia.blockscout.com/address/0x2fc8d823E95Ad23514373175Bfbf16a9d20Acc72)
+
+**Solution**
+
+- If you keep swapping one token all the way to another token, you will incrementally making additional profit because of the division in **getSwapPrice()** that it performs.
