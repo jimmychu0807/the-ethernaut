@@ -323,3 +323,4 @@ The learning is that even though the called contract is restricted to be a view 
 **Solution**
 
 - If you keep swapping one token all the way to another token, you will incrementally making additional profit because of the division in **getSwapPrice()** that it performs.
+- Keep swapping from one token to the other, back and forth, until you drain the DEX. On the last swap, you have to compute the exact amount so you don't retrieve more tokens than what the DEX has.
