@@ -300,8 +300,27 @@ Ref:
 
 - SolveDenial contract: [0x73E201be2A7e6695Ee81958E8172bd559c52Dc98](https://eth-sepolia.blockscout.com/address/0x73E201be2A7e6695Ee81958E8172bd559c52Dc98)
 
-### Learning
+**Learning**
 
 The attack is called gas grieving - depleting all the transaction gas.
 
 If you are using a low level `call` to continue executing in the event an external call reverts, ensure that you specify a fixed gas stipend. For example `<Address>.call{gas: <gasAmount>}(data)`. Typically one should follow the [checks-effects-interactions](https://docs.soliditylang.org/en/v0.8.33/security-considerations.html#reentrancy) pattern to avoid reentrancy attacks, there can be other circumstances (such as multiple external calls at the end of a function) where issues such as this can arise.
+
+## Problem 21: Shop
+
+- Shop contract: [0x4f6cF5291B7da082657b6237AAf16d177AEfabd7](https://eth-sepolia.blockscout.com/address/0x4f6cF5291B7da082657b6237AAf16d177AEfabd7)
+
+- SolveShop contract: [0x628Bda7Ea5632E928CE364b91FE60927D697646f](https://sepolia.etherscan.io/address/0x628Bda7Ea5632E928CE364b91FE60927D697646f)
+
+**Learning**
+
+The learning is that even though the called contract is restricted to be a view function. It can still read other contracts and rely on external contract states, and make it behave like a function that depend on varying states.
+
+## Problem 22: Dex
+
+- Dex contract: [0x2fc8d823E95Ad23514373175Bfbf16a9d20Acc72](https://eth-sepolia.blockscout.com/address/0x2fc8d823E95Ad23514373175Bfbf16a9d20Acc72)
+
+**Solution**
+
+- If you keep swapping one token all the way to another token, you will incrementally making additional profit because of the division in **getSwapPrice()** that it performs.
+- Keep swapping from one token to the other, back and forth, until you drain the DEX. On the last swap, you have to compute the exact amount so you don't retrieve more tokens than what the DEX has.
