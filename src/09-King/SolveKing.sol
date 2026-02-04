@@ -15,7 +15,7 @@ contract SolveKing {
         require(msg.value >= kingContract.prize());
 
         // transfer amount
-        (bool success,) = _target.call{ value: msg.value }("");
+        (bool success,) = _target.call{value: msg.value}("");
         require(success, "Call failed");
     }
 
@@ -23,7 +23,7 @@ contract SolveKing {
         revert PaymentError();
     }
 
-    function isContract(address account) internal view returns (bool)   {
+    function isContract(address account) internal view returns (bool) {
         return account.code.length > 0;
     }
 }

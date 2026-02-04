@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-import { Building } from "./Elevator.sol";
+import {Building} from "./Elevator.sol";
 
 interface IElevator {
     function goTo(uint256) external;
 }
+
 contract SolveElevator is Building {
     mapping(uint256 => bool) floorVisited;
     address public target;

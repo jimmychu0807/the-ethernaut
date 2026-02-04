@@ -18,5 +18,5 @@ contract SolveGatekeeperTwo {
         if (res) {
             emit GateEntered(tx.origin, _gateKey);
         }
-   }
+    }
 }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { IBuyer } from "./Shop.sol";
+import {IBuyer} from "./Shop.sol";
 
 interface IShop {
     function buy() external;

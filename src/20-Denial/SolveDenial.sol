@@ -25,7 +25,7 @@ contract SolveDenial {
         bytes memory inputData = abi.encodePacked(inputs);
 
         // gas grieving
-        while(gasleft() > 0) {
+        while (gasleft() > 0) {
             // Use staticcall for a view operation
             (bool callSuccess, bytes memory returndata) = EC_PAIRING_ADDR.staticcall(inputData);
 
