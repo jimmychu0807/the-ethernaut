@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { IBuyer } from "./Shop.sol";
+import {IBuyer} from "./Shop.sol";
 
 interface IShop {
     function buy() external;
@@ -10,19 +10,19 @@ interface IShop {
 
 contract SolveShop is IBuyer {
     // storage
-    uint256 immutable refPrice;
+    uint256 immutable REF_PRICE;
 
     constructor(uint256 _refPrice) {
-        refPrice = _refPrice;
+        REF_PRICE = _refPrice;
     }
 
     function price() external view returns (uint256) {
         IShop shop = IShop(msg.sender);
 
         if (!shop.isSold()) {
-            return refPrice + 20;
+            return REF_PRICE + 20;
         } else {
-            return refPrice - 20;
+            return REF_PRICE - 20;
         }
     }
 

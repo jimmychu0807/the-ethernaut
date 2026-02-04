@@ -16,14 +16,13 @@ contract SolveGatekeeperOne {
     address owner;
     IGatekeeper gk;
 
-    constructor (address _target) {
+    constructor(address _target) {
         require(_target.code.length > 0, "not a contract");
         owner = tx.origin;
         gk = IGatekeeper(_target);
     }
 
     function enter(bytes8 _gatekey) external returns (bool bEnter) {
-
         for (uint64 i = 0; i < TRIALS; i++) {
             uint256 gas = BASE_GAS + i;
             bytes memory data = abi.encodeWithSignature("enter(bytes8)", bytes8(_gatekey));
@@ -36,5 +35,4 @@ contract SolveGatekeeperOne {
             }
         }
     }
-
 }

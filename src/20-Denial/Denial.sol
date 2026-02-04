@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 contract Denial {
     address public partner; // withdrawal partner - pay the gas, split the withdraw
-    address public constant owner = address(0xA9E);
+    address public constant OWNER = address(0xA9E);
     uint256 timeLastWithdrawn;
     mapping(address => uint256) withdrawPartnerBalances; // keep track of partners balances
 
@@ -17,7 +17,7 @@ contract Denial {
         // perform a call without checking return
         // The recipient can revert, the owner will still get their share
         partner.call{value: amountToSend}("");
-        payable(owner).transfer(amountToSend);
+        payable(OWNER).transfer(amountToSend);
         // keep track of last withdrawal time
         timeLastWithdrawn = block.timestamp;
         withdrawPartnerBalances[partner] += amountToSend;

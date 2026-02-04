@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 contract SolveDenial {
-    address constant ECPairingAddr = 0x0000000000000000000000000000000000000008;
+    address constant EC_PAIRING_ADDR = 0x0000000000000000000000000000000000000008;
 
     // allow deposit of funds
     receive() external payable {
@@ -25,9 +25,9 @@ contract SolveDenial {
         bytes memory inputData = abi.encodePacked(inputs);
 
         // gas grieving
-        while(gasleft() > 0) {
+        while (gasleft() > 0) {
             // Use staticcall for a view operation
-            (bool callSuccess, bytes memory returndata) = ECPairingAddr.staticcall(inputData);
+            (bool callSuccess, bytes memory returndata) = EC_PAIRING_ADDR.staticcall(inputData);
 
             require(callSuccess, "ECPairing precompile call failed");
             require(returndata.length == 32, "Invalid return data length");

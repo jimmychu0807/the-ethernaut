@@ -8,11 +8,11 @@ interface ICoinFlip {
 }
 
 contract SolveCoinFlip {
-    address public immutable coinFlipContract;
+    address public immutable COINFLIP_CONTRACT;
     uint256 FACTOR = 57896044618658097711785492504343953926634992332820282019728792003956564819968;
 
     constructor(address _contract) {
-        coinFlipContract = _contract;
+        COINFLIP_CONTRACT = _contract;
     }
 
     function callFlip() external returns (bool res) {
@@ -20,7 +20,7 @@ contract SolveCoinFlip {
         uint256 coinFlip = blockValue / FACTOR;
         bool guess = coinFlip == 1 ? true : false;
 
-        res = ICoinFlip(coinFlipContract).flip(guess);
+        res = ICoinFlip(COINFLIP_CONTRACT).flip(guess);
         // console.log("result", res);
     }
 }
