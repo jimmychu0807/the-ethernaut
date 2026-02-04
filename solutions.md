@@ -324,3 +324,17 @@ The learning is that even though the called contract is restricted to be a view 
 
 - If you keep swapping one token all the way to another token, you will incrementally making additional profit because of the division in **getSwapPrice()** that it performs.
 - Keep swapping from one token to the other, back and forth, until you drain the DEX. On the last swap, you have to compute the exact amount so you don't retrieve more tokens than what the DEX has.
+
+## Problem 23: Dex Two
+
+- DexTwo contract: [0xd8CF74d217A2b6744Eec1aEB8234B8Dca76B3c4c](https://eth-sepolia.blockscout.com/address/0xd8CF74d217A2b6744Eec1aEB8234B8Dca76B3c4c)
+
+- MyToken contract: [0x5AdB7917691d375B7a1ea1E8C12B4AC38Ca75c69](https://eth-sepolia.blockscout.com/address/0x5AdB7917691d375B7a1ea1E8C12B4AC38Ca75c69)
+
+**Solution**
+
+- Deploy the MyToken contract and mint yourself **4** MyTokens.
+- Transfer **1** MyToken from your own account to the DEX.
+- Swap your own **1** MyToken to `token1` with the DEX (100% of MyToken).
+- Swap your own **2** MyToken to `token2` with the DEX (100% of MyToken).
+- By this point, all `token1` and `token2` have been depleted from the DEX. Submit the solution.
