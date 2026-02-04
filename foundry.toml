@@ -5,12 +5,14 @@ libs = ["lib"]
 
 remappings = [
   "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+  "oz-v3/contracts/=lib/oz-v3/contracts/"
 ]
 
 [lint]
 exclude_lints = [
   "mixed-case-variable",
-  "unwrapped-modifier-logic"
+  "unwrapped-modifier-logic",
+  "unchecked-call"
 ]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
