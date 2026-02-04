@@ -1,6 +1,6 @@
 # Ethernaut
 
-- https://ethernaut.openzeppelin.com/
+- [Problem Set](https://ethernaut.openzeppelin.com/)
 - player: [0xB0fD5a878DBF3F9358A251caF9b6Fc692A999cA7](https://sepolia.etherscan.io/address/0xB0fD5a878DBF3F9358A251caF9b6Fc692A999cA7)
 - Sepolia Network
 - `_ethers.version` == **5.7.2**
