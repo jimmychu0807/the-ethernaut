@@ -383,6 +383,7 @@ The learning is that even though the called contract is restricted to be a view 
   Execute the following:
 
   ```ts
+  let iface = new _ethers.utils.Interface(proxyAbi);
   let depositSel = iface.encodeFunctionData("deposit");
   // depositSel becomes '0xd0e30db0'
 
@@ -400,4 +401,85 @@ The learning is that even though the called contract is restricted to be a view 
   // call setMaxBalance()
   let playerBN = _ethers.BigNumber.from(player);
   await contract.setMaxBalance(playerBN);
+  ```
+
+## Problem 25: Motorbike
+
+- Motorbike contract: [0xe466f99614C4641b858675DAd573dC84BE565D9a](https://eth-sepolia.blockscout.com/address/0xe466f99614C4641b858675DAd573dC84BE565D9a)
+
+- Engine contract: [0xffe5af570904094b7fbcd10a8221a1d46abef4ff](https://sepolia.etherscan.io/address/0xffe5af570904094b7fbcd10a8221a1d46abef4ff)
+
+- DestroyMotorbikeEngine: [0x4D6e5e7231bE1a81C6B5d3C0504AAC199a6b1E86](https://eth-sepolia.blockscout.com/address/0x4D6e5e7231bE1a81C6B5d3C0504AAC199a6b1E86)
+
+```ts
+let provider = new _ethers.providers.Web3Provider(window.ethereum);
+let signer = provider.getSigner();
+
+let engineABI = [
+  "function upgrader() view returns (address)",
+  "function horsePower() view returns (uint256)",
+  "function initialize()",
+  "function upgradeToAndCall(address, bytes)",
+]
+
+let engineAddr = "0xffe5af570904094b7fbcd10a8221a1d46abef4ff"
+let engineContract = new _ethers.Contract(engineAddr, engineABI, signer);
+
+let destroyABI = [
+  "function destroyContract()",
+]
+
+let destroyContract = new _ethers.Contract(engineAddr, destroyABI, signer);
+```
+
+**Solution**
+
+- Note the Engine is not initialized yet.
+- Call `initialize()` and claim the upgrader.
+- Then deploy a simple smart contract that call `selfdestruct(msg.sender)`.
+- Call that function.
+
+But this solution no longer work after Dencun EVM upgrade (on Mar 2024).
+
+## Problem 26: DoubleEntryPoint
+
+- [CreateInstance tx](https://sepolia.etherscan.io/tx/0xe5e57b7dd9994d348806e7cd5462adf348b2d0575b1244415c2377785ce01724)
+
+- DET Token contract: [0xeae3ed3dE56A6BbC3694AD89c832590489D71F58](https://eth-sepolia.blockscout.com/address/0xeae3ed3dE56A6BbC3694AD89c832590489D71F58)
+- LegacyToken LGT contract: [0xAE680c15033693a617732293F948e492dd93F0Ea](https://sepolia.etherscan.io/address/0xae680c15033693a617732293f948e492dd93f0ea)
+- Forta contract: [0xf970B49C00CeBf6892bD9321A680c344fFC26133](https://sepolia.etherscan.io/address/0xf970b49c00cebf6892bd9321a680c344ffc26133)
+- CryptoVault contract: [0xf57BC5eF61DE236C7404d99D3f1D13AA5F157B48](https://sepolia.etherscan.io/address/0xf57bc5ef61de236c7404d99d3f1d13aa5f157b48)
+
+```ts
+let cryptoVaultAddr = "0xf57BC5eF61DE236C7404d99D3f1D13AA5F157B48"
+let cryptoVaultABI = [
+  "function sweptTokensRecipient() view returns(address)",
+  "function underlying() view returns(address)",
+]
+let cryptoVault = new _ethers.Contract(cryptoVaultAddr, cryptoVaultABI, signer)
+
+let legacyTokenAddr = "0xAE680c15033693a617732293F948e492dd93F0Ea"
+let legacyTokenABI = [
+  "function delegate() view returns(address)",
+  "function transfer(address, uint256) returns (bool)"
+]
+let legacyToken = new _ethers.Contract(legacyTokenAddr, legacyTokenABI, signer)
+
+```
+
+**Solution**
+
+- DetectionBot: [0x63574f0A5340138c54c1f42B085207b86B3176de](https://sepolia.etherscan.io/address/0x63574f0A5340138c54c1f42B085207b86B3176de)
+
+- Set the detection bot
+  ```ts
+  let fortaAddr = "0xf970B49C00CeBf6892bD9321A680c344fFC26133"
+  let fortaABI = [
+    "function setDetectionBot(address)",
+    "function notify(address, bytes)",
+    "function raiseAlert(address)"
+  ];
+  let forta = new _ethers.Contract(fortaAddr, fortaABI, signer)
+
+  await forta.setDetectionBot("0x63574f0A5340138c54c1f42B085207b86B3176de")
   ```
