@@ -483,3 +483,38 @@ let legacyToken = new _ethers.Contract(legacyTokenAddr, legacyTokenABI, signer)
 
   await forta.setDetectionBot("0x63574f0A5340138c54c1f42B085207b86B3176de")
   ```
+
+## Problem 27: Good Samaritan
+
+- creation tx: [0xa4ba786eab894b8aeb37a45dc6709813195214c95330462af72212dd10cf6644](https://sepolia.etherscan.io/tx/0xa4ba786eab894b8aeb37a45dc6709813195214c95330462af72212dd10cf6644)
+- Good Samaritan contract: [0xCbfd95775883BFC850Ba5De9f3116e1C6b27117A](https://sepolia.etherscan.io/address/0xCbfd95775883BFC850Ba5De9f3116e1C6b27117A)
+- wallet contract: [0x3b1a1bbF8F20b66B315590652A3FE5CF9E29B1a0](https://sepolia.etherscan.io/address/0x3b1a1bbF8F20b66B315590652A3FE5CF9E29B1a0)
+- coin contract: [0xf69b02d618e988b8b0536000e8d8b815b38b5e1d](https://sepolia.etherscan.io/address/0xf69b02d618e988b8b0536000e8d8b815b38b5e1d)
+
+```ts
+let provider = new _ethers.providers.Web3Provider(window.ethereum);
+let signer = provider.getSigner();
+
+let goodSamAddr = "0xCbfd95775883BFC850Ba5De9f3116e1C6b27117A"
+let goodSam = contract;
+
+let coinAddr = "0xf69b02d618e988b8b0536000e8d8b815b38b5e1d"
+let coinABI = [
+  "function balances(address) view returns(uint256)",
+  "function transfer(address, uint256)",
+]
+let coin = new _ethers.Contract(coinAddr, coinABI, signer)
+
+let walletAddr = "0x3b1a1bbF8F20b66B315590652A3FE5CF9E29B1a0"
+let walletABI = [
+  "function owner() view returns (address)",
+  "function coin() view returns (address)",
+  "function donate10(address)",
+  "function transferRemainder(address)",
+  "function setCoin(address)"
+]
+let wallet = new _ethers.Contract(walletAddr, walletABI, signer)
+
+```
+
+- SolveGoodSamaritan contract: [0x2681eC9DDAa6F43568e96fa1D82B4268aeEAE4DA](https://eth-sepolia.blockscout.com/address/0x2681eC9DDAa6F43568e96fa1D82B4268aeEAE4DA)
