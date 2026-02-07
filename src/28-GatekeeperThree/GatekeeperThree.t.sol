@@ -6,11 +6,10 @@ import {GatekeeperThree} from "./GatekeeperThree.sol";
 import {SolveGatekeeperThree} from "./SolveGatekeeperThree.sol";
 
 contract GatekeeperThreeTest is Test {
-    address deployer;
     GatekeeperThree gatekeeper;
 
     function setUp() public {
-        deployer = makeAddr("deployer");
+        address deployer = makeAddr("deployer");
         vm.startPrank(deployer);
 
         gatekeeper = new GatekeeperThree();
