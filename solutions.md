@@ -518,3 +518,26 @@ let wallet = new _ethers.Contract(walletAddr, walletABI, signer)
 ```
 
 - SolveGoodSamaritan contract: [0x2681eC9DDAa6F43568e96fa1D82B4268aeEAE4DA](https://eth-sepolia.blockscout.com/address/0x2681eC9DDAa6F43568e96fa1D82B4268aeEAE4DA)
+
+## Problem 28: Gatekeeper Three
+
+- creation tx: [0x0f4a3a2157e0c260749b293cd55cb6299d866d8d5bb5faf0443ed42995f8f91f](https://sepolia.etherscan.io/tx/0x0f4a3a2157e0c260749b293cd55cb6299d866d8d5bb5faf0443ed42995f8f91f)
+- GatekeeperThree contract: [0xd013Eda19a0CC798AF65C9cF4faA0D90BfA02A6C](https://sepolia.etherscan.io/address/0xd013eda19a0cc798af65c9cf4faa0d90bfa02a6c)
+- SimpleTrick contract: [0x497dC385C99C4893d7EF80eB463f58b852FF6EAa](https://sepolia.etherscan.io/address/0x497dc385c99c4893d7ef80eb463f58b852ff6eaa)
+
+**Solution**
+
+1. Deploy `SolveGatekeeperThree()` with **msg.value** `1010000000000000` and GatekeeperThree address
+
+   SolveGatekeeperThree contract: [0xDd37ba9D4f08Ea8aBd9C5122Db6AdB46A709B61C](https://sepolia.etherscan.io/address/0xDd37ba9D4f08Ea8aBd9C5122Db6AdB46A709B61C)
+
+2. Query the storage slot of the trick contract
+   ```ts
+   let trickAddr = "0x497dC385C99C4893d7EF80eB463f58b852FF6EAa"
+   await provider.getStorageAt(trickAddr, 2)
+   // the value is 6985c68c, which is 1770374796 in decimal
+   ```
+
+3. Call `SolveGatekeeperThree.solve(1770374796)`
+
+   Tx: [0x8b72583099d2ecf44782aa3e1e94f73a99b57337b28281de8234d92cae668d3b](https://sepolia.etherscan.io/tx/0x8b72583099d2ecf44782aa3e1e94f73a99b57337b28281de8234d92cae668d3b)
