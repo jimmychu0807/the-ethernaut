@@ -7,3 +7,6 @@
 [submodule "lib/oz-v3"]
     path = lib/oz-v3
     url = https://github.com/OpenZeppelin/openzeppelin-contracts.git
+[submodule "lib/forge-std-v1.13.0"]
+	path = lib/forge-std-v1.13.0
+	url = https://github.com/foundry-rs/forge-std
