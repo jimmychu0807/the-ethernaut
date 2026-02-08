@@ -3,9 +3,7 @@ pragma solidity 0.6.12;
 
 contract HigherOrder {
     address public commander;
-
     uint256 public treasury;
-    bytes32 public t1;
 
     function registerTreasury(uint8) public {
         assembly {

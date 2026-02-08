@@ -579,3 +579,6 @@ let wallet = new _ethers.Contract(walletAddr, walletABI, signer)
 
   await contract.claimLeadership()
   ```
+
+- registerTreasury tx: [0x18976b2a0ebc2b687955d30b17ebf1e24899d9b1050742883a6603032867dfbc](https://sepolia.etherscan.io/tx/0x18976b2a0ebc2b687955d30b17ebf1e24899d9b1050742883a6603032867dfbc)
+- claimLeadership tx: [0x10f7e802c3cbf425191d46fb967a493caf19d6c2145a33c82439fe1fc613413f](https://sepolia.etherscan.io/tx/0x10f7e802c3cbf425191d46fb967a493caf19d6c2145a33c82439fe1fc613413f)
