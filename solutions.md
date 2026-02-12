@@ -774,3 +774,64 @@ await wrappedTokenSigner2.transfer(player, 10);
 await pool.lockDeposits();
 await contract.makeBet(player);
 ```
+
+## Problem 35: Elliptic Token
+
+- level addr: [0x1696D4B915Ec980872a2685d580DE0e79C1Aa1a1](https://sepolia.etherscan.io/address/0x1696d4b915ec980872a2685d580de0e79c1aa1a1)
+- creation tx: [0x9f33c629c06d29d7fd3e5c34e14786570be466ef70bed52bf3c206e28938a4d8](https://sepolia.etherscan.io/tx/0x9f33c629c06d29d7fd3e5c34e14786570be466ef70bed52bf3c206e28938a4d8)
+- EllipticToken contract: [0x10b8767703b64498aeadafc1848f0a6398f48bb3](https://sepolia.etherscan.io/address/0x10b8767703b64498aeadafc1848f0a6398f48bb3)
+
+- Alice addr: 0xA11CE84AcB91Ac59B0A4E2945C9157eF3Ab17D4e
+
+- The function selector of the following function is `0xbeb30836`
+  ```
+  function redeemVoucher(
+    uint256 amount,
+    address receiver,
+    bytes32 salt,
+    bytes memory ownerSignature,
+    bytes memory receiverSignature
+  )
+  ```
+
+- This is the calldata of internal txs of redeemVoucher, [listed here](https://sepolia.etherscan.io/tx/0x9f33c629c06d29d7fd3e5c34e14786570be466ef70bed52bf3c206e28938a4d8/advanced#internal)
+
+```
+0xbeb30836
+0000000000000000000000000000000000000000000000008ac7230489e80000  - amount
+000000000000000000000000a11ce84acb91ac59b0a4e2945c9157ef3ab17d4e  - receiver
+04a078de06d9d2ebd86ab2ae9c2b872b26e345d33f988d6d5d875f94e9c8ee1e  - salt
+00000000000000000000000000000000000000000000000000000000000000a0  - ownerSig offset
+0000000000000000000000000000000000000000000000000000000000000120  - receiverSig offset
+0000000000000000000000000000000000000000000000000000000000000041  - ownerSig len
+085a4f70d03930425d3d92b19b9d4e37672a9224ee2cd68381a9854bb3673ef8  - ownerSig starts
+6b35cfdeee0fb1d2168587fb188eefb4fe046109af063bf85d9d3d6859ceb445
+1c00000000000000000000000000000000000000000000000000000000000000  - ownerSig ends
+0000000000000000000000000000000000000000000000000000000000000041  - receiverSig len
+ab1dcd2a2a1c697715a62eb6522b7999d04aa952ffa2619988737ee675d9494f  - receiverSig starts
+2b50ecce40040bcb29b5a8ca1da875968085f22b7c0a50f29a4851396251de12
+1c00000000000000000000000000000000000000000000000000000000000000  - receiverSig ends
+```
+
+Now we can set the following:
+
+```ts
+let provider = new _ethers.providers.Web3Provider(window.ethereum);
+let signer = provider.getSigner();
+
+let BigNumber = _ethers.BigNumber;
+let solidityKeccak256 = _ethers.utils.solidityKeccak256;
+let amount = BigNumber.from("0x8ac7230489e80000");
+let aliceAddr = "0xA11CE84AcB91Ac59B0A4E2945C9157eF3Ab17D4e";
+let salt = "0x04a078de06d9d2ebd86ab2ae9c2b872b26e345d33f988d6d5d875f94e9c8ee1e";
+
+let aliceSig = "0xab1dcd2a2a1c697715a62eb6522b7999d04aa952ffa2619988737ee675d9494f2b50ecce40040bcb29b5a8ca1da875968085f22b7c0a50f29a4851396251de121c"
+
+// refer to EllipticToken.t.sol on how to get the targetAmt, playerSig
+let targetAmt = BigNumber.from("61489430585420512047590628522400808048359119601265721717299180259965582879091");
+let playerSig = "0x48c490c689e783b0fdf35624914c8b09c6d2322f689d1ce74e37f1b86f604b540fc6eca47ba60e70349e0b99dfedf438ffedd0c0b90322b6ed72d592df37043a1b"
+
+// attack
+await contract.permit(targetAmt, player, aliceSig, playerSig);
+await contract.transferFrom(aliceAddr, player, amount);
+```
