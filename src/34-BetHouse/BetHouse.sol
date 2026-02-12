@@ -70,6 +70,7 @@ contract Pool is ReentrancyGuard {
         if (value_ > 0) {
             if (PoolToken(depositToken).allowance(msg.sender, address(this)) < value_) revert InsufficientAllowance();
             depositedPDT[msg.sender] += value_;
+            // forge-lint: disable-next-line(erc20-unchecked-transfer)
             PoolToken(depositToken).transferFrom(msg.sender, address(this), value_);
             _valueToMint += value_;
         }
@@ -82,6 +83,7 @@ contract Pool is ReentrancyGuard {
         uint256 _depositedValue = depositedPDT[msg.sender];
         if (_depositedValue > 0) {
             depositedPDT[msg.sender] = 0;
+            // forge-lint: disable-next-line(erc20-unchecked-transfer)
             PoolToken(depositToken).transfer(msg.sender, _depositedValue);
         }
 
