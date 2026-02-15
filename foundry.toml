@@ -5,6 +5,7 @@ libs = ["lib"]
 via_ir = true      # enable IR-based optimizer pipeline
 optimizer = true   # usually keep the optimizer on with via_ir
 optimizer_runs = 200
+evm_version = "prague"
 
 remappings = [
   "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",

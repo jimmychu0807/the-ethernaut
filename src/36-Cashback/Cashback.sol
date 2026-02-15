@@ -6,6 +6,13 @@ import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {ERC1155} from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import {TransientSlot} from "@openzeppelin/contracts/utils/TransientSlot.sol";
 
+/**
+ * Rumor has it there’s a back door for power users. Your brief is simple: become the loyalty
+ * program’s nightmare. Max out your cashback in every supported currency and walk away with at
+ * least two Super Cashback NFT, one of which must correspond to your player address.
+ *
+ */
+
 /*//////////////////////////////////////////////////////////////
                         CURRENCY LIBRARY
 //////////////////////////////////////////////////////////////*/
@@ -75,21 +82,25 @@ contract Cashback layout at 0x442a95e7a6e84627e9cbb594ad6d8331d52abc7e6b6ca88ab2
     mapping(Currency => uint256 Rate) public cashbackRates;
     mapping(Currency => uint256 MaxCashback) public maxCashback;
 
+    // Check the tx is called from the cashback original contract, without any delegation on user acct
     modifier onlyCashback() {
         require(msg.sender == address(CASHBACK_ACCOUNT), CashbackNotCashback());
         _;
     }
 
+    // Check the tx is NOT called from the cashback original contract
     modifier onlyNotCashback() {
         require(msg.sender != address(CASHBACK_ACCOUNT), CashbackIsCashback());
         _;
     }
 
+    // Check the current context is in a user smart account context
     modifier notOnCashback() {
         require(address(this) != address(CASHBACK_ACCOUNT), CashbackNotAllowedInCashback());
         _;
     }
 
+    // Check the current context is NOT in a user smart account context
     modifier onlyOnCashback() {
         require(address(this) == address(CASHBACK_ACCOUNT), CashbackOnlyAllowedInCashback());
         _;
