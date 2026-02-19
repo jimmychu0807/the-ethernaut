@@ -16,6 +16,8 @@ remappings = [
 [lint]
 exclude_lints = [
   "mixed-case-variable",
+  "mixed-case-function",
+  "screaming-snake-case-immutable",
   "unwrapped-modifier-logic",
   "unchecked-call"
 ]
