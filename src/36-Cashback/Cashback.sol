@@ -2,9 +2,10 @@
 pragma solidity 0.8.30;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {ERC1155} from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import {TransientSlot} from "@openzeppelin/contracts/utils/TransientSlot.sol";
+
+import {console} from "forge-std/Test.sol";
 
 /**
  * Rumor has it there’s a back door for power users. Your brief is simple: become the loyalty
@@ -108,11 +109,17 @@ contract Cashback layout at 0x442a95e7a6e84627e9cbb594ad6d8331d52abc7e6b6ca88ab2
 
     modifier onlyDelegatedToCashback() {
         bytes memory code = msg.sender.code;
-
         address payable delegate;
+
+        console.log("onlyDelegatedToCashback:code");
+        console.logBytes(code);
+
         assembly {
             delegate := mload(add(code, 0x17))
         }
+
+        console.log("onlyDelegatedToCashback:delegate: %s", delegate);
+
         require(Cashback(delegate) == CASHBACK_ACCOUNT, CashbackNotDelegatedToCashback());
         _;
     }
