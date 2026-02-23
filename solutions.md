@@ -871,7 +871,12 @@ From the creation tx, we get the Cashback constructor argument:
 **Solution**
 
 1. Crafted to inject bytecode at the beginning of a contract in YUL. Refer to [`yul/36-Cashback/InjectedBeginning.yul`](./yul/36-Cashback/InjectedBeginning.yul).
-2. Run **DeployAttackCode** script in [`./src/36-Cashback/Cashback.s.sol`](.//src/36-Cashback/Cashback.s.sol)
+2. Run **DeployAttackCode** script in [`src/36-Cashback/Cashback.s.sol`](.//src/36-Cashback/Cashback.s.sol)
 3. There are other miscellaneous scripts inside to deal with my situation.
 
 Submit level tx: [0x2ba77780455ef52eb626d1a2c5451a04fc4e5e9ee697f473a4ef90ae96e75eb0](https://sepolia.etherscan.io/tx/0x2ba77780455ef52eb626d1a2c5451a04fc4e5e9ee697f473a4ef90ae96e75eb0)
+
+Helpful resources I consulted:
+- [Hackernoon article](https://hackernoon.com/exploiting-eip-7702-delegation-in-the-ethernaut-cashback-challenge-a-step-by-step-writeup)
+- [EVM codes](https://www.evm.codes/)
+- [Solidity Yul docs](https://docs.soliditylang.org/en/stable/yul.html)
