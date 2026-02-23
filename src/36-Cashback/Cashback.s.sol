@@ -75,13 +75,14 @@ contract AttackScript is Script {
 }
 
 /**
-function accrueCashback(Currency currency, uint256 amount)
-        external
-        onlyDelegatedToCashback
-        onlyUnlocked
-        onlyOnCashback
-    {
-**/
+ * function accrueCashback(Currency currency, uint256 amount)
+ *         external
+ *         onlyDelegatedToCashback
+ *         onlyUnlocked
+ *         onlyOnCashback
+ *     {
+ *
+ */
 
 contract VerifyScript is Script {
     error UnequalCashback(address, uint256, uint256);
@@ -91,7 +92,7 @@ contract VerifyScript is Script {
     Cashback cashback = Cashback(CASHBACK_ADDR);
     Currency freedomCurrency = Currency.wrap(FREEDOM_ADDR);
 
-    function run() view public {
+    function run() public view {
         // Check the cashback is maxed out
         Currency[] memory currencies = new Currency[](2);
         currencies[0] = CurrencyLibrary.NATIVE_CURRENCY;

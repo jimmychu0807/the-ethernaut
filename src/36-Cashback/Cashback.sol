@@ -110,10 +110,6 @@ contract Cashback layout at 0x442a95e7a6e84627e9cbb594ad6d8331d52abc7e6b6ca88ab2
     modifier onlyDelegatedToCashback() {
         bytes memory code = msg.sender.code;
         address payable delegate;
-
-        console.log("onlyDelegatedToCashback:code");
-        console.logBytes(code);
-
         assembly {
             delegate := mload(add(code, 0x17))
         }
