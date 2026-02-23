@@ -15,6 +15,10 @@ out/
 cache/
 broadcast/
 
+# node js
+dist/
+node_modules/
+
 # Optional
 .env
 .env.local
