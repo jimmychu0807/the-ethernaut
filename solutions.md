@@ -867,3 +867,11 @@ From the creation tx, we get the Cashback constructor argument:
 0000000000000000000000000000000000000000000000000de0b6b3a7640000 - currenciesMaxCashback starts
 00000000000000000000000000000000000000000000001b1ae4d6e2ef500000 - currenciesMaxCashback ends
 ```
+
+**Solution**
+
+1. Crafted to inject bytecode at the beginning of a contract in YUL. Refer to [`yul/36-Cashback/InjectedBeginning.yul`](./yul/36-Cashback/InjectedBeginning.yul).
+2. Run **DeployAttackCode** script in [`./src/36-Cashback/Cashback.s.sol`](.//src/36-Cashback/Cashback.s.sol)
+3. There are other miscellaneous scripts inside to deal with my situation.
+
+Submit level tx: [0x2ba77780455ef52eb626d1a2c5451a04fc4e5e9ee697f473a4ef90ae96e75eb0](https://sepolia.etherscan.io/tx/0x2ba77780455ef52eb626d1a2c5451a04fc4e5e9ee697f473a4ef90ae96e75eb0)
