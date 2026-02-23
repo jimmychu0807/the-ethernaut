@@ -19,7 +19,6 @@ import {Test} from "forge-std/Test.sol";
 contract SolveCashback is Test {
     Cashback cashback;
     ICashbackAttack cc;
-    address attackAddr;
 
     address payable alice;
     uint256 aliceSK;
