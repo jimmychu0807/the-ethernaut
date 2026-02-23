@@ -843,6 +843,7 @@ await contract.transferFrom(aliceAddr, player, amount);
 - level address: **0xaCC5D8b0dc23b3e8b1651900e5064ce7CB851E89**
 - creation tx: [0xeca62367595cec9e0be46eb22f96ba368acd30859f803fe0fa952c84bca7f9b3](https://sepolia.etherscan.io/tx/0xeca62367595cec9e0be46eb22f96ba368acd30859f803fe0fa952c84bca7f9b3)
 - Cashback contract: [0xdCc409Af2566c47F6DA4d30Eae8155b332A64078](https://sepolia.etherscan.io/address/0xdCc409Af2566c47F6DA4d30Eae8155b332A64078)
+- Freedom Token: [0x13aaf3218facf57cfbf5925e15433307b59bcc37](https://sepolia.etherscan.io/token/0x13aaf3218facf57cfbf5925e15433307b59bcc37)
 - SuperCashbackNFT contract: [0x0ae3cf507ea6caf9d13ea5e624ae2bab386ce354](https://sepolia.etherscan.io/address/0x0ae3cf507ea6caf9d13ea5e624ae2bab386ce354)
 
 From the creation tx, we get the Cashback constructor argument:

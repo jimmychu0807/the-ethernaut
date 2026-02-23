@@ -11,7 +11,7 @@ address constant SUPER_NFT_ADDR = 0x0Ae3Cf507ea6caF9d13Ea5e624AE2bAb386ce354;
 // constants
 uint256 constant BASIS_POINTS = 10000;
 uint256 constant NATIVE_CASHBACK_RATE = 50;
-uint256 constant NATIVE_MAX_CASHBACK = 0xde0b6b3a7640000;
+uint256 constant NATIVE_MAX_CASHBACK = 0x0de0b6b3a7640000;
 uint256 constant FREEDOM_CASHBACK_RATE = 200;
 uint256 constant FREEDOM_MAX_CASHBACK = 0x1b1ae4d6e2ef500000;
 bytes32 constant UNLOCKED_TRANSIENT = keccak256("cashback.storage.Unlocked");
