@@ -897,6 +897,7 @@ Helpful resources I consulted:
 **switchLock(bytes signature)**
 
 nonce: 0
+msg: **lock0**
 
 ```
 Function: switchLock(bytes signature) ***
@@ -912,6 +913,7 @@ MethodID: 0xfd0268fb
 **setAdmin(bytes domain_,address newAdmin)**
 
 nonce: 1
+msg: **admin1**
 
 ```
 Function: setAdmin(bytes domain_,address newAdmin) ***

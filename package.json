@@ -1,0 +1,26 @@
+{
+  "name": "ethernaut",
+  "version": "1.0.0",
+  "description": "ethernaut typescript",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "author": {
+    "name": "Jimmy Chu",
+    "url": "https://jimmychu0807.hk"
+  },
+  "scripts": {
+    "37": "tsx src/ts/37-impersonatorTwo/index.ts",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@noble/secp256k1": "^3.0.0",
+    "viem": "^2.46.3"
+  },
+  "packageManager": "pnpm@10.27.0"
+}
