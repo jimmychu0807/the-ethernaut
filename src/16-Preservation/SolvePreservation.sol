@@ -7,7 +7,7 @@ contract SolvePreservation {
     address public timeZone2Library;
     address public owner;
 
-    function setTime(uint256 _time) public {
+    function setTime(uint256) public {
         owner = tx.origin;
     }
 }

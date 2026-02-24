@@ -880,3 +880,47 @@ Helpful resources I consulted:
 - [Hackernoon article](https://hackernoon.com/exploiting-eip-7702-delegation-in-the-ethernaut-cashback-challenge-a-step-by-step-writeup)
 - [EVM codes](https://www.evm.codes/)
 - [Solidity Yul docs](https://docs.soliditylang.org/en/stable/yul.html)
+
+## Problem 37: Impersonator Two
+
+- ethernaut addr: 0xa3e7317E591D5A0F1c605be1b3aC4D2ae56104d6
+- level addr: 0x4C20884aDF68C7102a1aeb94FCD973278dD6e9a4
+- level instance creation tx: [0x5573973706c0934131071bd4ac8037b16f96695ef92a8917d852c725810d343a](https://sepolia.etherscan.io/tx/0x5573973706c0934131071bd4ac8037b16f96695ef92a8917d852c725810d343a)
+- instance addr: [0x82f91050F5785EEce6530f55772e50D82974c0Bc](https://sepolia.etherscan.io/address/0x82f91050F5785EEce6530f55772e50D82974c0Bc)
+
+- After creation, the contract attributes
+  - owner: `0x03E2cf81BBE61D1fD1421aFF98e8605a5A9e953a`
+  - admin: `0xADa4aFfe581d1A31d7F75E1c5a3A98b2D4C40f68`
+  - nonce: 2
+  - locked: true
+
+**switchLock(bytes signature)**
+
+nonce: 0
+
+```
+Function: switchLock(bytes signature) ***
+
+MethodID: 0xfd0268fb
+[0]:  0000000000000000000000000000000000000000000000000000000000000020
+[1]:  0000000000000000000000000000000000000000000000000000000000000041
+[2]:  e5648161e95dbf2bfc687b72b745269fa906031e2108118050aba59524a23c40
+[3]:  70026fc30e4e02a15468de57155b080f405bd5b88af05412a9c3217e028537e3
+[4]:  1b00000000000000000000000000000000000000000000000000000000000000
+```
+
+**setAdmin(bytes domain_,address newAdmin)**
+
+nonce: 1
+
+```
+Function: setAdmin(bytes domain_,address newAdmin) ***
+
+MethodID: 0x865fc3f3
+[0]:  0000000000000000000000000000000000000000000000000000000000000040
+[1]:  000000000000000000000000ada4affe581d1a31d7f75e1c5a3a98b2d4c40f68
+[2]:  0000000000000000000000000000000000000000000000000000000000000041
+[3]:  e5648161e95dbf2bfc687b72b745269fa906031e2108118050aba59524a23c40
+[4]:  4c3ac03b268ae1d2aca1201e8a936adf578a8b95a49986d54de87cd0ccb68a79
+[5]:  1b00000000000000000000000000000000000000000000000000000000000000
+```
