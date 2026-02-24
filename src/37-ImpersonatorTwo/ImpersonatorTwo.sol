@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.28;
+pragma solidity ^0.8.30;
 
 import {Ownable} from "oz-v4/contracts/access/Ownable.sol";
 import {ECDSA} from "oz-v4/contracts/utils/cryptography/ECDSA.sol";
