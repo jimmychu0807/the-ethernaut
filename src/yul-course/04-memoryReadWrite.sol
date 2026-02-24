@@ -29,8 +29,6 @@ contract MemoryReadWrite {
         }
         emit MemoryPointer(x40, _msize);
 
-        Point memory p = Point({x: 1, y: 2});
-
         assembly {
             // this is loading the next available free pointer
             x40 := mload(0x40)
