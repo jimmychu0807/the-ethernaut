@@ -38,7 +38,8 @@ async function main() {
   console.log(`signatureDefaultK:\nr: ${r}\ns: ${s}\nv:${v}`);
 
   // confirm it can be recover to signer acct
-   recoveredAddr = await recoverMessageAddress({ message, signature: signatureDefaultK });
+  recoveredAddr = await recoverMessageAddress({ message, signature: signatureDefaultK });
+  assert(recoveredAddr === account.address, "signWithDefaultK signature doesn't recover expected address");
 }
 
 async function getViemSignature(message: string, privateKey: any) {

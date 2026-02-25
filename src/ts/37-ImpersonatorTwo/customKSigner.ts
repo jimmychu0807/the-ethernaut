@@ -188,26 +188,10 @@ export async function signWithDefaultK(
 
   // convert the last byte: recId (0/1) -> v (27/28)
   const rsv = new Uint8Array(65);
-  rsv.set(sig.subarray(1, 64), 0);
+  rsv.set(sig.subarray(1, 65), 0);
   rsv[64] = 27 + sig[0]!;
 
   return bytesToHex(rsv);
-
-  // const sigObj = secp.Signature.fromBytes(sig, "recovered");
-
-  // const {r, s} = sigObj;
-  // if (typeof sigObj.recovery !== 'number') {
-  //   throw new Error("Unexpected signature object with no `v` value");
-  // }
-  // const v = 27 + sigObj.recovery;
-
-  // return {
-  //   r,
-  //   s,
-  //   v,
-  //   rHex: bytesToHex(bigIntTo32Bytes(r)),
-  //   sHex: bytesToHex(bigIntTo32Bytes(s)),
-  // };
 }
 
 /**
