@@ -45,7 +45,7 @@ async function main() {
   let k: bigint = BigInt("1009");
   const signatureCustomK = (await signWithCustomK(hashMessage(message), privateKeyHex, k)) as Hex;
   ({ r, s, v } = intoRSV(signatureCustomK));
-  console.log(`signatureCustomK - "${message}":\nr: ${r}\ns: ${s}\nv:${v}`);
+  console.log(`signatureCustomK - "${message}"/${k}:\nr: ${r}\ns: ${s}\nv:${v}`);
 
   // confirm it can be recovered to signer acct
   recoveredAddr = await recoverMessageAddress({ message, signature: signatureCustomK });
@@ -55,7 +55,7 @@ async function main() {
   const message2 = "admin1";
   const signature2CustomK = (await signWithCustomK(hashMessage(message2), privateKeyHex, k)) as Hex;
   ({ r, s, v } = intoRSV(signature2CustomK));
-  console.log(`signatureCustomK - "${message2}":\nr: ${r}\ns: ${s}\nv:${v}`);
+  console.log(`signatureCustomK - "${message2}/${k}":\nr: ${r}\ns: ${s}\nv:${v}`);
 
   // confirm it can be recovered to signer acct
   recoveredAddr = await recoverMessageAddress({ message: message2, signature: signature2CustomK });

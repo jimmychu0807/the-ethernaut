@@ -12,75 +12,79 @@ contract ImpersonatorTwoTest is Test {
 
     uint256 constant N = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141;
 
-    // nonce: 0, switchLock()
-    bytes32 constant S0 = hex"70026fc30e4e02a15468de57155b080f405bd5b88af05412a9c3217e028537e3";
+    bytes32 constant R = hex"24acb1c19b6dfc25defb01c2e2681ae82deacc0ff21ae8ff01f82f37a6a2147f";
 
-    // nonce: 1, setAdmin()
-    bytes32 constant S1 = hex"4c3ac03b268ae1d2aca1201e8a936adf578a8b95a49986d54de87cd0ccb68a79";
+    // msg: "lock0"
+    bytes32 constant S0 = hex"699e057dbf38b13e6a90e051497abf3d85292299e17d0e4168ff7e834f2b645f";
 
-    bytes32 constant R = hex"e5648161e95dbf2bfc687b72b745269fa906031e2108118050aba59524a23c40";
+    // msg: "admin1"
+    bytes32 constant S1 = hex"65465d0b92ce24ef57eb7e3ccd20aa49df50c4626e53d1e7361da1afa5e19c2d";
 
     function setUp() public {
         instance = new ImpersonatorTwo();
     }
 
-    function testSigning() public {
-        (address alice, uint256 aliceSk) = makeAddrAndKey("alice");
-        bytes32 hash = keccak256("Signed by Alice");
+    function testSigning() public view {
+        uint256 sk = 1;
+        address tester = vm.addr(sk);
+        string memory message = "lock0";
 
-        uint256 nonce = 0;
-        string memory m0 = string(abi.encodePacked("lock", nonce.toString()));
-        bytes32 z0 = instance.hash_message(m0);
+        bytes32 hsh0 = instance.hash_message(message);
 
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(aliceSk, z0);
-        console.logBytes32(r);
-        console.logBytes32(s);
-        console.log(v);
-
-        nonce++;
-        string memory m1 = string(abi.encodePacked("admin", nonce.toString()));
-        bytes32 z1 = instance.hash_message(m1);
-
-        (v, r, s) = vm.sign(aliceSk, z1);
-        console.logBytes32(r);
-        console.logBytes32(s);
-        console.log(v);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(sk, hsh0);
+        console.log("user: %s", tester);
+        console.log("r: %s", vm.toString(r));
+        console.log("s: %s", vm.toString(s));
+        console.log("v: %s", v);
     }
 
     function testSolveImpersonatorTwo() public view {
         // Solving for k = (z0 − z1)⋅(s0 − s1)^(-1) mod n
-        // z0
-        uint256 nonce = 0;
-        string memory m0 = string(abi.encodePacked("lock", nonce.toString()));
+        string memory m0 = "lock0";
+        string memory m1 = "admin1";
         bytes32 z0 = instance.hash_message(m0);
-        console.log("m0: %s", m0);
-        console.logBytes32(z0);
-
-        // z1
-        nonce++;
-        string memory m1 = string(abi.encodePacked("admin", nonce.toString()));
         bytes32 z1 = instance.hash_message(m1);
-        console.log("m1: %s", m1);
-        console.logBytes32(z1);
 
         uint256 zdiff = submod(uint256(z0), uint256(z1), N);
-        console.log("zdiff: %s", zdiff);
-
         uint256 sdiff = submod(uint256(S0), uint256(S1), N);
-        console.log("sdiff: %s", sdiff);
-
-        uint256 k = mulmod(zdiff, modInv(sdiff, N), N);
-        console.log("k: %s", k);
+        uint256 ssum = addmod(uint256(S0), uint256(S1), N);
+        uint256 k1 = normalized(mulmod(zdiff, modInv(sdiff, N), N), N);
+        uint256 k2 = normalized(mulmod(zdiff, modInv(ssum, N), N), N);
+        console.log("k1: %s", k1);
+        console.log("k2: %s", k2);
 
         // Now, solving for sk (private key) = (s0⋅k − z0)⋅r^(-1) mod n
-        uint256 lp = submod(mulmod(uint256(S0), k, N), uint256(z0), N);
-        uint256 rp = modInv(uint256(R), N);
-        uint256 sk = mulmod(lp, rp, N);
-        console.log("sk: %s", sk);
+        uint256 lp1k1 = submod(mulmod(uint256(S0), k1, N), uint256(z0), N);
+        uint256 lp2k1 = submod(mulmod(submod(N, uint256(S0), N), k1, N), uint256(z0), N);
+        uint256 lp1k2 = submod(mulmod(uint256(S0), k2, N), uint256(z0), N);
+        uint256 lp2k2 = submod(mulmod(submod(N, uint256(S0), N), k2, N), uint256(z0), N);
 
-        // Use this owner secret key to create more signature
-        address owner = vm.addr(sk);
-        console.log("owner: %s", owner);
+        uint256 rp = modInv(uint256(R), N);
+        uint256 sklp1k1 = mulmod(lp1k1, rp, N);
+        uint256 sklp2k1 = mulmod(lp2k1, rp, N);
+        uint256 sklp1k2 = mulmod(lp1k2, rp, N);
+        uint256 sklp2k2 = mulmod(lp2k2, rp, N);
+
+        console.log("sklp1k1: %s", sklp1k1);
+        console.log("addr (sklp1k1): %s", vm.addr(sklp1k1));
+
+        console.log("sklp2k1: %s", sklp2k1);
+        console.log("addr (sklp2k1): %s", vm.addr(sklp2k1));
+
+        console.log("sklp1k2: %s", sklp1k2);
+        console.log("addr (sklp1k2): %s", vm.addr(sklp1k2));
+
+        console.log("sklp2k2: %s", sklp2k2);
+        console.log("addr (sklp2k2): %s", vm.addr(sklp2k2));
+    }
+
+    function normalized(uint256 v, uint256 n) internal pure returns (uint256 result) {
+        uint256 vInverse = n - (v % n);
+        if (v > vInverse) {
+            result = vInverse;
+        } else {
+            result = v;
+        }
     }
 
     function submod(uint256 v1, uint256 v2, uint256 n) internal pure returns (uint256 result) {
@@ -90,7 +94,9 @@ contract ImpersonatorTwoTest is Test {
         if (v1n > v2n) {
             result = v1n - v2n;
         } else {
-            result = v2n - v1n;
+            unchecked {
+                result = v1n + n - v2n;
+            }
         }
     }
 
