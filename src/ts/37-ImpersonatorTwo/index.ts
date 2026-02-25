@@ -28,18 +28,38 @@ async function main() {
   let {r, s, v} = intoRSV(signatureViem);
   console.log(`signatureViem:\nr: ${r}\ns: ${s}\nv:${v}`);
 
-  // confirm it can be recover to signer acct
+  // confirm it can be recovered to signer acct
   let recoveredAddr = await recoverMessageAddress({ message, signature: signatureViem });
   assert(recoveredAddr === account.address, "Viem signature doesn't recover expected address");
 
-  // self-implemented default K
+  // self-implemented defaultK
   const signatureDefaultK = (await signWithDefaultK(hashMessage(message), privateKeyHex)) as Hex;
-  ({ r, s, v } = intoRSV(signatureDefaultK)); // wrap destructuring assignment in parentheses!
+  ({ r, s, v } = intoRSV(signatureDefaultK));
   console.log(`signatureDefaultK:\nr: ${r}\ns: ${s}\nv:${v}`);
 
-  // confirm it can be recover to signer acct
+  // confirm it can be recovered to signer acct
   recoveredAddr = await recoverMessageAddress({ message, signature: signatureDefaultK });
   assert(recoveredAddr === account.address, "signWithDefaultK signature doesn't recover expected address");
+
+  // self-implemented customK - "lock0"
+  let k: bigint = BigInt("1009");
+  const signatureCustomK = (await signWithCustomK(hashMessage(message), privateKeyHex, k)) as Hex;
+  ({ r, s, v } = intoRSV(signatureCustomK));
+  console.log(`signatureCustomK - "${message}":\nr: ${r}\ns: ${s}\nv:${v}`);
+
+  // confirm it can be recovered to signer acct
+  recoveredAddr = await recoverMessageAddress({ message, signature: signatureCustomK });
+  assert(recoveredAddr === account.address, "signatureCustomK signature doesn't recover expected address");
+
+  // self-implemented customK - "admin1"
+  const message2 = "admin1";
+  const signature2CustomK = (await signWithCustomK(hashMessage(message2), privateKeyHex, k)) as Hex;
+  ({ r, s, v } = intoRSV(signature2CustomK));
+  console.log(`signatureCustomK - "${message2}":\nr: ${r}\ns: ${s}\nv:${v}`);
+
+  // confirm it can be recovered to signer acct
+  recoveredAddr = await recoverMessageAddress({ message: message2, signature: signature2CustomK });
+  assert(recoveredAddr === account.address, "signature2CustomK signature doesn't recover expected address");
 }
 
 async function getViemSignature(message: string, privateKey: any) {

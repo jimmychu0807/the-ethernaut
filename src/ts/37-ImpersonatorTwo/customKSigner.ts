@@ -116,11 +116,11 @@ export interface EcdsaSignature {
  * WARNING: Only use this for research / testing. If you ever reuse k or make it
  * predictable, you will leak the private key.
  */
-export function signWithCustomK(
-  msgHash: Hex | Bytes,
-  privKey: Hex | Bytes | bigint,
-  k: Hex | Bytes | bigint
-): EcdsaSignature {
+export async function signWithCustomK(
+  msgHash: Hex,
+  privKey: Hex,
+  k: bigint
+): Promise<Hex> {
   const hashBytes = toBytes(msgHash);
   if (hashBytes.length !== 32) {
     throw new Error('msgHash must be 32 bytes (pre-hashed)');
@@ -153,13 +153,13 @@ export function signWithCustomK(
 
   const v = 27 + Number(recovery);
 
-  return {
-    r,
-    s,
-    v,
-    rHex: bytesToHex(bigIntTo32Bytes(r)),
-    sHex: bytesToHex(bigIntTo32Bytes(s)),
-  };
+  // convert the last byte: recId (0/1) -> v (27/28)
+  const rsv = new Uint8Array(65);
+  rsv.set(bigIntTo32Bytes(r), 0);
+  rsv.set(bigIntTo32Bytes(s), 32);
+  rsv[64] = Number(recovery);
+
+  return bytesToHex(rsv);
 }
 
 /**
@@ -193,17 +193,3 @@ export async function signWithDefaultK(
 
   return bytesToHex(rsv);
 }
-
-/**
- * Example usage:
- *
- * const msgHash = '0x' + '11'.repeat(32);
- * const privKey = '0x' + '01'.repeat(32);
- * const k = '0x' + '02'.repeat(32);
- *
- * const customSig = signWithCustomK(msgHash, privKey, k);
- * console.log(customSig);
- *
- * const defaultSig = await signWithDefaultK(msgHash, privKey);
- * console.log(defaultSig);
- */
