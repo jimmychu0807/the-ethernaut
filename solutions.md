@@ -930,9 +930,10 @@ MethodID: 0x865fc3f3
 **Solution**
 - Run [`src/37-ImpersonatorTwo/ImpersonatorTwo.t.sol`](./src/37-ImpersonatorTwo/ImpersonatorTwo.t.sol) to backward compute the k (`31337`) and secret key (`0x10a6891de55baf453d66c5faede86eabccf93f3d284540d205f24207670855cc`).
 - Run [`src/37-ImpersonatorTwo/ImpersonatorTwo.s.sol`](./src/37-ImpersonatorTwo/ImpersonatorTwo.s.sol) to perform the attack on the instance contract.
-- Submit the contract instance.
+- Submit the instance contract!
 
 **Learning**
 - Given two `r` values and you know the message hash, you can backward-compute back the private key of the signer.
 - Also, pay attention the message for **setAdmin()** is `admin` + `nonce` + `admin address`
-- Also wrote (with Cursor AI assistance) [src/ts/37-ImpersonatorTwo/customKSigner.ts](./src/ts/37-ImpersonatorTwo/customKSigner.ts) to generate two signatures with the same `r` value.
+- Also wrote (with Cursor AI assistance) [`src/ts/37-ImpersonatorTwo/customKSigner.ts`](./src/ts/37-ImpersonatorTwo/customKSigner.ts) to generate two signatures with the same `r` value.
+- When computing `s`, it is possible that you get back the `N - s` value as Ethereum tooling uses the lower-half of the `s` value, i.e if `s` > `N/2`, then return `N - s`.
