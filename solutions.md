@@ -874,7 +874,7 @@ From the creation tx, we get the Cashback constructor argument:
 2. Run **DeployAttackCode** script in [`src/36-Cashback/Cashback.s.sol`](.//src/36-Cashback/Cashback.s.sol)
 3. There are other miscellaneous scripts inside to deal with my situation.
 
-Submit level tx: [0x2ba77780455ef52eb626d1a2c5451a04fc4e5e9ee697f473a4ef90ae96e75eb0](https://sepolia.etherscan.io/tx/0x2ba77780455ef52eb626d1a2c5451a04fc4e5e9ee697f473a4ef90ae96e75eb0)
+Level submission tx: [0x2ba77780455ef52eb626d1a2c5451a04fc4e5e9ee697f473a4ef90ae96e75eb0](https://sepolia.etherscan.io/tx/0x2ba77780455ef52eb626d1a2c5451a04fc4e5e9ee697f473a4ef90ae96e75eb0)
 
 Helpful resources I consulted:
 - [Hackernoon article](https://hackernoon.com/exploiting-eip-7702-delegation-in-the-ethernaut-cashback-challenge-a-step-by-step-writeup)
@@ -930,7 +930,7 @@ MethodID: 0x865fc3f3
 **Solution**
 - Run [`src/37-ImpersonatorTwo/ImpersonatorTwo.t.sol`](./src/37-ImpersonatorTwo/ImpersonatorTwo.t.sol) to backward compute the k (`31337`) and secret key (`0x10a6891de55baf453d66c5faede86eabccf93f3d284540d205f24207670855cc`).
 - Run [`src/37-ImpersonatorTwo/ImpersonatorTwo.s.sol`](./src/37-ImpersonatorTwo/ImpersonatorTwo.s.sol) to perform the attack on the instance contract.
-- Submit the instance contract!
+- Level submission tx: [0xa9a10c2254b8f202b30564b375f4bfc2ae2b70ccae90a71bcf051806cc5acf9a](https://sepolia.etherscan.io/tx/0xa9a10c2254b8f202b30564b375f4bfc2ae2b70ccae90a71bcf051806cc5acf9a)
 
 **Learning**
 - Given two `r` values and you know the message hash, you can backward-compute back the private key of the signer.
