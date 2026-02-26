@@ -897,6 +897,7 @@ Helpful resources I consulted:
 **switchLock(bytes signature)**
 
 nonce: 0
+msg: **lock0**
 
 ```
 Function: switchLock(bytes signature) ***
@@ -912,6 +913,7 @@ MethodID: 0xfd0268fb
 **setAdmin(bytes domain_,address newAdmin)**
 
 nonce: 1
+msg: **admin1**
 
 ```
 Function: setAdmin(bytes domain_,address newAdmin) ***
@@ -924,3 +926,14 @@ MethodID: 0x865fc3f3
 [4]:  4c3ac03b268ae1d2aca1201e8a936adf578a8b95a49986d54de87cd0ccb68a79
 [5]:  1b00000000000000000000000000000000000000000000000000000000000000
 ```
+
+**Solution**
+- Run [`src/37-ImpersonatorTwo/ImpersonatorTwo.t.sol`](./src/37-ImpersonatorTwo/ImpersonatorTwo.t.sol) to backward compute the k (`31337`) and secret key (`0x10a6891de55baf453d66c5faede86eabccf93f3d284540d205f24207670855cc`).
+- Run [`src/37-ImpersonatorTwo/ImpersonatorTwo.s.sol`](./src/37-ImpersonatorTwo/ImpersonatorTwo.s.sol) to perform the attack on the instance contract.
+- Submit the instance contract!
+
+**Learning**
+- Given two `r` values and you know the message hash, you can backward-compute back the private key of the signer.
+- Also, pay attention the message for **setAdmin()** is `admin` + `nonce` + `admin address`
+- Also wrote (with Cursor AI assistance) [`src/ts/37-ImpersonatorTwo/customKSigner.ts`](./src/ts/37-ImpersonatorTwo/customKSigner.ts) to generate two signatures with the same `r` value.
+- When computing `s`, it is possible that you get back the `N - s` value as Ethereum tooling uses the lower-half of the `s` value, i.e if `s` > `N/2`, then return `N - s`.
