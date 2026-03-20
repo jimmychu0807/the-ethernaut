@@ -928,6 +928,7 @@ MethodID: 0x865fc3f3
 ```
 
 **Solution**
+
 - Run [`src/37-ImpersonatorTwo/ImpersonatorTwo.t.sol`](./src/37-ImpersonatorTwo/ImpersonatorTwo.t.sol) to backward compute the k (`31337`) and secret key (`0x10a6891de55baf453d66c5faede86eabccf93f3d284540d205f24207670855cc`).
 - Run [`src/37-ImpersonatorTwo/ImpersonatorTwo.s.sol`](./src/37-ImpersonatorTwo/ImpersonatorTwo.s.sol) to perform the attack on the instance contract.
 - Level submission tx: [0xa9a10c2254b8f202b30564b375f4bfc2ae2b70ccae90a71bcf051806cc5acf9a](https://sepolia.etherscan.io/tx/0xa9a10c2254b8f202b30564b375f4bfc2ae2b70ccae90a71bcf051806cc5acf9a)
@@ -937,3 +938,15 @@ MethodID: 0x865fc3f3
 - Also, pay attention the message for **setAdmin()** is `admin` + `nonce` + `admin address`
 - Also wrote (with Cursor AI assistance) [`src/ts/37-ImpersonatorTwo/customKSigner.ts`](./src/ts/37-ImpersonatorTwo/customKSigner.ts) to generate two signatures with the same `r` value.
 - When computing `s`, it is possible that you get back the `N - s` value as Ethereum tooling uses the lower-half of the `s` value, i.e if `s` > `N/2`, then return `N - s`.
+
+## Problem 38: UniqueNFT
+
+- level address: [0xd4aaD74C0cE6c1364758AF11953EB49dbDfaD7aE](https://sepolia.etherscan.io/address/0xd4aad74c0ce6c1364758af11953eb49dbdfad7ae)
+- creation tx: [0xd950e31ceae7816cbcb60014ff0a3b5cfad3646f4eaab7543668dee06ee0fc44](https://sepolia.etherscan.io/tx/0xd950e31ceae7816cbcb60014ff0a3b5cfad3646f4eaab7543668dee06ee0fc44)
+- instance address: [0xD0AB2Ad11736e1d087fa50b5B63f068CEfC29b7E](https://sepolia.etherscan.io/address/0xD0AB2Ad11736e1d087fa50b5B63f068CEfC29b7E)
+
+**Solution**
+
+- Solution contract: [0x43be0437c25e58eff5c367559e1372f7c4094d40](https://sepolia.etherscan.io/address/0x43be0437c25e58eff5c367559e1372f7c4094d40)
+- Solving tx: [0x43e40286d6fed625a507c64126e01b084ddf6d0b1a2d0c2627dc81b49e3c3856](https://sepolia.etherscan.io/tx/0x43e40286d6fed625a507c64126e01b084ddf6d0b1a2d0c2627dc81b49e3c3856)
+- Level submission tx: [0x533d230c08ee917010da7c2a38f91ea91c67fa4e22d8e6542d8d6158c60f8cf0](https://sepolia.etherscan.io/tx/0x533d230c08ee917010da7c2a38f91ea91c67fa4e22d8e6542d8d6158c60f8cf0)
