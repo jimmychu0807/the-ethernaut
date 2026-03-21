@@ -963,3 +963,10 @@ MethodID: 0x865fc3f3
 - Solution script at: [`src/39-Forger/Forger.s.sol`](./src/39-Forger/Forger.s.sol)
 
 - Level submission tx: [0xd6db15b81fcc90b82fade871fb41e6ad5d56b83677b99f7ecdfbc529e592c245](https://sepolia.etherscan.io/tx/0xd6db15b81fcc90b82fade871fb41e6ad5d56b83677b99f7ecdfbc529e592c245)
+
+## Problem 40: NonOptimistic Portal
+
+- ethernaut addr: 0xa3e7317E591D5A0F1c605be1b3aC4D2ae56104d6
+- level addr: 0x488748B25625422E83dE55dca8338319A6667b7c
+- instance addr: 0x2beEb86F201F7F09A92FA8F5D73F9985b637aFaD
+- creation tx: [0xaf6cc44c2de69994ce328be9e39eca3366446467b45c1b8b6e8c2023544ebe4c](https://sepolia.etherscan.io/tx/0xaf6cc44c2de69994ce328be9e39eca3366446467b45c1b8b6e8c2023544ebe4c)
