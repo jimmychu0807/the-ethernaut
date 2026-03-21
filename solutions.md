@@ -957,3 +957,9 @@ MethodID: 0x865fc3f3
 - level address: [0xd3653C916C68d503d8A74E38956c8Be3252A0714](https://sepolia.etherscan.io/address/0xd3653C916C68d503d8A74E38956c8Be3252A0714)
 - instance address: [0xec5171F9c006f3a0BCF6dA72BF09cbc13e63D6A7](https://sepolia.etherscan.io/address/0xec5171F9c006f3a0BCF6dA72BF09cbc13e63D6A7)
 - creation tx: [0x471abf0b2907f19d4bd344fe3a05d2bc773ac102b4ffc2ab543430064ded4484](https://sepolia.etherscan.io/tx/0x471abf0b2907f19d4bd344fe3a05d2bc773ac102b4ffc2ab543430064ded4484)
+
+**Solution**
+
+- Solution script at: [`src/39-Forger/Forger.s.sol`](./src/39-Forger/Forger.s.sol)
+
+- Level submission tx: [0xd6db15b81fcc90b82fade871fb41e6ad5d56b83677b99f7ecdfbc529e592c245](https://sepolia.etherscan.io/tx/0xd6db15b81fcc90b82fade871fb41e6ad5d56b83677b99f7ecdfbc529e592c245)

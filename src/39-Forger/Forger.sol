@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.30;
 
-import { ERC20 } from "oz-v4.6.0/contracts/token/ERC20/ERC20.sol";
-import { ECDSA } from "oz-v4.6.0/contracts/utils/cryptography/ECDSA.sol";
+import {ERC20} from "oz-v4.6.0/contracts/token/ERC20/ERC20.sol";
+import {ECDSA} from "oz-v4.6.0/contracts/utils/cryptography/ECDSA.sol";
 
 contract Forger is ERC20 {
-
     error SignatureExpired();
     error SignatureUsed();
     error InvalidSigner(address wrongSigner);
@@ -32,12 +31,7 @@ contract Forger is ERC20 {
         require(block.timestamp <= deadline, SignatureExpired());
         require(!signatureUsed[keccak256(signature)], SignatureUsed());
 
-        bytes32 messageHash = keccak256(abi.encode(
-            receiver,
-            amount,
-            salt,
-            deadline
-        ));
+        bytes32 messageHash = keccak256(abi.encode(receiver, amount, salt, deadline));
 
         address signer = ECDSA.recover(messageHash, signature);
 

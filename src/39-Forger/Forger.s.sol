@@ -1,21 +1,20 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.30;
 
-import {Test} from "forge-std/Test.sol";
+import {Script} from "forge-std/Script.sol";
 import {Forger} from "./Forger.sol";
 
-contract ForgerTest is Test {
-    Forger public forger;
+contract ForgerScript is Script {
+    address constant FORGER_ADDR = 0xec5171F9c006f3a0BCF6dA72BF09cbc13e63D6A7;
 
-    function setUp() public {
-        forger = new Forger();
-    }
-
-    function testCreateNewTokensFromOwnerSignature() public {
+    function run() public {
         address receiver = 0x1D96F2f6BeF1202E4Ce1Ff6Dad0c2CB002861d3e;
         uint256 amount = 100 ether;
         bytes32 salt = 0x044852b2a670ade5407e78fb2863c51de9fcb96542a07186fe3aeda6bb8a116d;
         uint256 deadline = 115792089237316195423570985008687907853269984665640564039457584007913129639935;
+
+        Forger forger = Forger(FORGER_ADDR);
+        vm.startBroadcast();
 
         // The first signature is valid and the tokens are minted to the receiver - 65 bytes
         // r || s || v
@@ -35,6 +34,8 @@ contract ForgerTest is Test {
 
         forger.createNewTokensFromOwnerSignature(sig2, receiver, amount, salt, deadline);
 
-        assertEq(forger.totalSupply(), amount * 2);
+        require(forger.totalSupply() == amount * 2, "Total supply not match");
+
+        vm.stopBroadcast();
     }
 }
