@@ -950,3 +950,16 @@ MethodID: 0x865fc3f3
 - Solution contract: [0x43be0437c25e58eff5c367559e1372f7c4094d40](https://sepolia.etherscan.io/address/0x43be0437c25e58eff5c367559e1372f7c4094d40)
 - Solving tx: [0x43e40286d6fed625a507c64126e01b084ddf6d0b1a2d0c2627dc81b49e3c3856](https://sepolia.etherscan.io/tx/0x43e40286d6fed625a507c64126e01b084ddf6d0b1a2d0c2627dc81b49e3c3856)
 - Level submission tx: [0x533d230c08ee917010da7c2a38f91ea91c67fa4e22d8e6542d8d6158c60f8cf0](https://sepolia.etherscan.io/tx/0x533d230c08ee917010da7c2a38f91ea91c67fa4e22d8e6542d8d6158c60f8cf0)
+
+## Problem 39: Forger
+
+- ethernaut addr: 0xa3e7317E591D5A0F1c605be1b3aC4D2ae56104d6
+- level address: [0xd3653C916C68d503d8A74E38956c8Be3252A0714](https://sepolia.etherscan.io/address/0xd3653C916C68d503d8A74E38956c8Be3252A0714)
+- instance address: [0xec5171F9c006f3a0BCF6dA72BF09cbc13e63D6A7](https://sepolia.etherscan.io/address/0xec5171F9c006f3a0BCF6dA72BF09cbc13e63D6A7)
+- creation tx: [0x471abf0b2907f19d4bd344fe3a05d2bc773ac102b4ffc2ab543430064ded4484](https://sepolia.etherscan.io/tx/0x471abf0b2907f19d4bd344fe3a05d2bc773ac102b4ffc2ab543430064ded4484)
+
+**Solution**
+
+- Solution script at: [`src/39-Forger/Forger.s.sol`](./src/39-Forger/Forger.s.sol)
+
+- Level submission tx: [0xd6db15b81fcc90b82fade871fb41e6ad5d56b83677b99f7ecdfbc529e592c245](https://sepolia.etherscan.io/tx/0xd6db15b81fcc90b82fade871fb41e6ad5d56b83677b99f7ecdfbc529e592c245)
