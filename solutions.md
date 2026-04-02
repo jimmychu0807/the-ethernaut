@@ -963,3 +963,48 @@ MethodID: 0x865fc3f3
 - Solution script at: [`src/39-Forger/Forger.s.sol`](./src/39-Forger/Forger.s.sol)
 
 - Level submission tx: [0xd6db15b81fcc90b82fade871fb41e6ad5d56b83677b99f7ecdfbc529e592c245](https://sepolia.etherscan.io/tx/0xd6db15b81fcc90b82fade871fb41e6ad5d56b83677b99f7ecdfbc529e592c245)
+
+## Problem 40: NotOptimistic Portal
+
+- ethernaut addr: 0xa3e7317E591D5A0F1c605be1b3aC4D2ae56104d6
+- level addr: 0x488748B25625422E83dE55dca8338319A6667b7c
+- instance addr: 0x2beEb86F201F7F09A92FA8F5D73F9985b637aFaD
+- creation tx: [0xaf6cc44c2de69994ce328be9e39eca3366446467b45c1b8b6e8c2023544ebe4c](https://sepolia.etherscan.io/tx/0xaf6cc44c2de69994ce328be9e39eca3366446467b45c1b8b6e8c2023544ebe4c)
+
+contract state:
+- owner: 0x488748B25625422E83dE55dca8338319A6667b7c
+- sequencer: 0x0000000000000000000000000000000000000000
+- governance: 0xB43eBB13D1C42709651c032C7894962023A1f90A
+- bufCnt: 1
+- l2StateRoot: 0xd7d3685b57d9897755fad850b19f7c43debfded002e18a9e8e5b63639882b6f9
+- name: CTFToken
+- symbol: CTFT
+
+general notes
+- someone first **sendMessage()**, then **executeMessage()**.
+- inside execute, should verifyMessage first
+
+The 4‑byte selector **0x3a69197e** likely corresponds to the function:
+  **rollupProvider()**
+
+### **Learning**
+
+ref:
+- https://medium.com/coinmonks/ethereum-under-the-hood-part-3-rlp-decoding-df236dc13e58
+- https://ethereum.org/developers/docs/data-structures-and-encoding/rlp/
+
+RLP decoding rules:
+
+1. Look at the first byte,The first byte should fall in one of the following ranges : [ [0x00 .. 0x7f] , [0x80.. 0xb7] , [0xb8 .. 0xbf ] , [0xc0 .. 0xf7], [0xf8 .. 0xff] ] and Decipher Data type using the following rule if the byte falls within:
+
+   - [0x00 .. 0x7f] : Data is of type String and should be decoded as it is.
+   - [0x80 .. 0xb7] : String and its a short string
+   - [0xb8 .. 0xbf] : String and its a long string
+   - [0xc0 .. 0xf7] : List and short list
+   - [0xf8 .. 0xff] : List and it’s a long list
+
+  2. Get the length of the byte array :
+
+[ First byte — First Byte from the Byte Range] = length of the data, e.g.: 0x83–0x80 = 3 , 3 is the length of the byte array
+
+3. Perform Step one and two all over until the end of the byte array.

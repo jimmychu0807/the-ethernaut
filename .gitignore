@@ -22,3 +22,6 @@ node_modules/
 # Optional
 .env
 .env.local
+
+# vs-code
+*.code-workspace
