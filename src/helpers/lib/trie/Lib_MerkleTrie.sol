@@ -5,6 +5,7 @@ pragma solidity ^0.8.9;
 import {Lib_BytesUtils} from "../utils/Lib_BytesUtils.sol";
 import {Lib_RLPReader} from "../rlp/Lib_RLPReader.sol";
 import {Lib_RLPWriter} from "../rlp/Lib_RLPWriter.sol";
+import {console} from "forge-std/Script.sol";
 
 /**
  * @title Lib_MerkleTrie
@@ -89,6 +90,10 @@ library Lib_MerkleTrie {
         returns (bool _exists, bytes memory _value)
     {
         TrieNode[] memory proof = _parseProof(_proof);
+
+        console.log("Lib_MerkleTrie::get() - 20");
+        console.log("proof len: %s", proof.length);
+
         (uint256 pathLength, bytes memory keyRemainder, bool isFinalNode) = _walkNodePath(proof, _key, _root);
 
         bool exists = keyRemainder.length == 0;
@@ -96,6 +101,9 @@ library Lib_MerkleTrie {
         require(exists || isFinalNode, "Provided proof is invalid.");
 
         bytes memory value = exists ? _getNodeValue(proof[pathLength - 1]) : bytes("");
+
+        console.log("Lib_MerkleTrie::get() - retrieved value:");
+        console.logBytes(value);
 
         return (exists, value);
     }
@@ -126,10 +134,19 @@ library Lib_MerkleTrie {
         uint256 currentKeyIncrement = 0;
         TrieNode memory currentNode;
 
+        console.log("key:");
+        console.logBytes(key);
+
         // Proof is top-down, so we start at the first element (root).
         for (uint256 i = 0; i < _proof.length; i++) {
             currentNode = _proof[i];
             currentKeyIndex += currentKeyIncrement;
+
+            console.log("currentKeyIdx: %s", currentKeyIndex);
+            console.log("currentNode:");
+            console.logBytes(currentNode.encoded);
+
+            console.log("currentNode decoded length: %s", currentNode.decoded.length);
 
             // Keep track of the proof elements we actually need.
             // It's expensive to resize arrays, so this simply reduces gas costs.

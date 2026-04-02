@@ -7,6 +7,7 @@ import {Lib_RLPReader} from "../helpers/lib/rlp/Lib_RLPReader.sol";
 import {Lib_SecureMerkleTrie} from "../helpers/lib/trie/Lib_SecureMerkleTrie.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {console} from "forge-std/Script.sol";
 
 interface IMessageReceiver {
     function onMessageReceived(bytes memory messageData) external;
@@ -64,19 +65,29 @@ contract NotOptimisticPortal is ERC20, ReentrancyGuard {
         require(!executedMessages[withdrawalHash], "Message already executed");
         require(_messageReceivers.length == _messageData.length, "Message execution data arrays mismatch");
 
+        console.log("executeMessage: withdrawalHash:");
+        console.logBytes32(withdrawalHash);
+
         for (uint256 i; i < _messageData.length; i++) {
             _executeOperation(_messageReceivers[i], _messageData[i], false);
         }
 
+        console.log("executeMessage - 30");
+
         _verifyMessageInclusion(
             withdrawalHash, _proofs.stateTrieProof, _proofs.storageTrieProof, _proofs.accountStateRlp, _bufferIndex
         );
+
+        console.log("executeMessage - 40");
 
         executedMessages[withdrawalHash] = true;
 
         if (_amount != 0) {
             _mint(_tokenReceiver, _amount);
         }
+
+        console.log("executeMessage - 50");
+
         emit MessageExecuted(_tokenReceiver, _amount, _messageReceivers, _messageData, _salt);
     }
 
@@ -91,6 +102,10 @@ contract NotOptimisticPortal is ERC20, ReentrancyGuard {
             require(bytes4(_messageData[i][0:4]) == bytes4(0x3a69197e), "Message not allowed");
         }
         bytes32 storageSlot = _computeMessageSlot(msg.sender, _amount, _messageReceivers, _messageData, _salt);
+
+        console.log("storageSlot:");
+        console.logBytes32(storageSlot);
+
         uint256 slotValue;
         assembly {
             slotValue := sload(storageSlot)
@@ -99,6 +114,7 @@ contract NotOptimisticPortal is ERC20, ReentrancyGuard {
         assembly {
             sstore(storageSlot, 0x01)
         }
+
         _burn(msg.sender, _amount);
     }
 
@@ -178,11 +194,24 @@ contract NotOptimisticPortal is ERC20, ReentrancyGuard {
         bytes calldata accountStateRlp,
         uint16 bufferIndex
     ) internal view {
+        /* How it is called:
+           _verifyMessageInclusion(
+               withdrawalHash, _proofs.stateTrieProof, _proofs.storageTrieProof, _proofs.accountStateRlp, _bufferIndex
+           );
+        */
+
+        console.log("_verifyMessageInclusion - 10");
+
         // Verify L2_TARGET in state root
         bool accountVerified = Lib_SecureMerkleTrie.verifyInclusionProof(
-            abi.encodePacked(L2_TARGET), accountStateRlp, stateTrieProof, l2StateRoots[bufferIndex]
+            abi.encodePacked(L2_TARGET), // key
+            accountStateRlp, // value
+            stateTrieProof, // proof
+            l2StateRoots[bufferIndex] // root
         );
         require(accountVerified, "Invalid account proof");
+
+        console.log("_verifyMessageInclusion - 20");
 
         // Extract storageRoot
         Lib_RLPReader.RLPItem[] memory accountState = accountStateRlp.toRLPItem().readList();
@@ -190,11 +219,15 @@ contract NotOptimisticPortal is ERC20, ReentrancyGuard {
         // Account state is [nonce, balance, storageRoot, codeHash]
         bytes32 storageRoot = accountState[2].readBytes32();
 
+        console.log("_verifyMessageInclusion - 30");
+
         // Verify message slot in storage root
         bool slotVerified = Lib_SecureMerkleTrie.verifyInclusionProof(
             abi.encodePacked(messageSlot), hex"01", storageTrieProof, storageRoot
         );
         require(slotVerified, "Invalid storage proof");
+
+        console.log("_verifyMessageInclusion - 40");
     }
 
     function _updateL2State(

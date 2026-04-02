@@ -3,6 +3,7 @@ pragma solidity ^0.8.9;
 
 /* Library Imports */
 import {Lib_MerkleTrie} from "./Lib_MerkleTrie.sol";
+import {console} from "forge-std/Script.sol";
 
 /**
  * @title Lib_SecureMerkleTrie
@@ -24,6 +25,11 @@ library Lib_SecureMerkleTrie {
      * included proof is correctly constructed.
      * @return _verified `true` if the k/v pair exists in the trie, `false` otherwise.
      */
+
+    // How it is called:
+    // bool accountVerified = Lib_SecureMerkleTrie.verifyInclusionProof(
+    //     abi.encodePacked(L2_TARGET), accountStateRlp, stateTrieProof, l2StateRoots[bufferIndex]
+    // );
     function verifyInclusionProof(bytes memory _key, bytes memory _value, bytes memory _proof, bytes32 _root)
         internal
         pure
