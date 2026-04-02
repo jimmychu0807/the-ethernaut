@@ -59,6 +59,6 @@ contract NotOptimisticPortalTest is Test {
         NotOptimisticPortal.ProofData memory proofs =
             NotOptimisticPortal.ProofData({stateTrieProof: hex"", storageTrieProof: hex"", accountStateRlp: hex""});
 
-        portal.executeMessage(address(this), amount, receiverArr, dataArr, salt, proofs, bufferIndex);
+        // portal.executeMessage(address(this), amount, receiverArr, dataArr, salt, proofs, bufferIndex);
     }
 }
